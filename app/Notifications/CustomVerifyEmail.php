@@ -49,27 +49,15 @@ class CustomVerifyEmail extends Notification
 
         $expires = config('auth.verification.expire', 60);
 
-        // I Will comment it till I have front-end ready.
-
-        // $tempUrl = URL::temporarySignedRoute(
-        //     'verification.verify',
-        //     Carbon::now()->addMinutes($expires),
-        //     ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
-        // );
-
-        // $fullUrl = config('app.frontend_url') . '/login?verify_url=' . urlencode($tempUrl);
-
-        // return $fullUrl;
-
-
-        return URL::temporarySignedRoute(
+        $tempUrl = URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes($expires),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification())
-            ]
+            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
+
+        $fullUrl = config('app.frontend_url') . '/?verify_url=' . urlencode($tempUrl);
+
+        return $fullUrl;
 
     }
 
