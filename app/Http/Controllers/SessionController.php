@@ -36,7 +36,7 @@ class SessionController extends Controller
 
 
             // it causes error I don't know why yet.
-            // $request->session()->regenerate();
+            $request->session()->regenerate();
 
             return response()->json([
                 'message' => 'User successfully logged in.',

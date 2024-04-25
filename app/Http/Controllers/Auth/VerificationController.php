@@ -41,7 +41,7 @@ class VerificationController extends Controller
         }
 
         if ($user->hasVerifiedEmail()) {
-            return response()->json(['message' => 'Email is already verified.']);
+            return response()->json(['message' => 'Email is already verified.'], 422);
         }
 
         $user->sendEmailVerificationNotification();
