@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class SessionController extends Controller
 {
@@ -34,8 +36,6 @@ class SessionController extends Controller
             return $user->hasVerifiedEmail();
         }, $remember)) {
 
-
-            // it causes error I don't know why yet.
             $request->session()->regenerate();
 
             return response()->json([
@@ -56,5 +56,47 @@ class SessionController extends Controller
         $request->session()->regenerateToken();
         return response()->json(['message' => 'You have been successfully logged out!']);
     }
+
+    public function forgotPassword(Request $request): JsonResponse
+    {
+
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['status' => __($status)]);
+        }
+
+        return response()->json(['email' => __($status)], 400);
+    }
+
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+
+
+        $status = Password::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+                event(new Password($user));
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json(['status' => __($status)]);
+        } elseif ($status === Password::INVALID_TOKEN) {
+            return response()->json(['error' => 'The password reset link is expired or invalid.'], 422);
+        }
+
+        return response()->json(['email' => [__($status)]], 400);
+    }
+
 
 }

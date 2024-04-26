@@ -15,10 +15,12 @@ Route::controller(SessionController::class)->group(function () {
     Route::middleware([CheckLoggedIn::class])->group(function () {
         Route::post('/register', 'register');
         Route::post('/login', 'login');
+        Route::post('/forgot-password', 'forgotPassword');
+        Route::post('/reset-password', 'resetPassword');
+        Route::post('/reset-password/resend', 'resendResetLink');
     });
 
     Route::post('/logout', 'logout')->middleware('auth:sanctum');
-
 
 });
 
