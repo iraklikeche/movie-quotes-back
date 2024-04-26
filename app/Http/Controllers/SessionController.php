@@ -6,6 +6,7 @@ use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,30 +74,30 @@ class SessionController extends Controller
         return response()->json(['email' => __($status)], 400);
     }
 
+
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
+        $user = User::where('email', $request->email)->first();
 
+        if ($user && Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'You cannot reuse your old password.'], 422);
+        }
 
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user, $password) {
+            function ($user, $password) {
                 $user->forceFill([
                     'password' => Hash::make($password)
                 ])->setRememberToken(Str::random(60));
-
                 $user->save();
-                event(new Password($user));
+                event(new PasswordReset($user));
             }
         );
 
-        if ($status === Password::PASSWORD_RESET) {
-            return response()->json(['status' => __($status)]);
-        } elseif ($status === Password::INVALID_TOKEN) {
-            return response()->json(['error' => 'The password reset link is expired or invalid.'], 422);
+        if ($status == Password::PASSWORD_RESET) {
+            return response()->json(['status' => 'Password has been reset.']);
+        } else {
+            return response()->json(['error' => 'Failed to reset password.'], 422);
         }
-
-        return response()->json(['email' => [__($status)]], 400);
     }
-
-
 }
