@@ -38,16 +38,9 @@ class SessionController extends Controller
         }, $remember)) {
 
             $request->session()->regenerate();
-
-            // return response()->json([
-            //     'message' => 'User successfully logged in.',
-            // ]);
             return response()->json(['message' => __('auth.login_success')]);
         }
 
-        // return response()->json([
-        //     'message' => 'The provided credentials are incorrect or the email has not been verified.'
-        // ], 401);
         return response()->json(['message' => __('auth.login_fail')], 401);
 
 
