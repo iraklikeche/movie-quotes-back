@@ -27,7 +27,14 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << EOF
             cd apps
-            cd api-moviequotes-irakli-ketchekmadze 
+            cd ./-back-movie-quotes-irakli-ketchekmadze
             git pull
             php artisan optimize:clear
+            npm install
+            npm run build
+            composer install --no-dev --optimize-autoloader
+            php artisan migrate --force  
+            php artisan config:cache 
+            php artisan route:cache  
+            php artisan view:cache  
           EOF
