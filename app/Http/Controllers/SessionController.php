@@ -19,6 +19,13 @@ class SessionController extends Controller
     public function register(RegisterUserRequest $request): JsonResponse
     {
 
+        // User::create([
+        //     'username' => 'test2',
+        //     'email' => 'test2@gmail.com',
+        //     'password' => '123',
+        //     'email_verified_at' => '2024-01-01'
+        // ]);
+
         $user = User::create($request->validated());
 
         $user->sendEmailVerificationNotification();
