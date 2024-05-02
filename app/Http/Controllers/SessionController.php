@@ -13,18 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use App\Models\PasswordReset as PasswordResetEvent;
 
 class SessionController extends Controller
 {
     public function register(RegisterUserRequest $request): JsonResponse
     {
-
-        // User::create([
-        //     'username' => 'test2',
-        //     'email' => 'test2@gmail.com',
-        //     'password' => '123',
-        //     'email_verified_at' => '2024-01-01'
-        // ]);
 
         $user = User::create($request->validated());
 
@@ -36,7 +30,6 @@ class SessionController extends Controller
 
     public function login(LoginUserRequest $request): JsonResponse
     {
-
         $credentials = $request->only('email', 'password');
         $remember = $request->input('remember', false);
 
@@ -50,7 +43,6 @@ class SessionController extends Controller
 
         return response()->json(['message' => __('auth.login_fail')], 401);
 
-
     }
 
     public function logout(Request $request): JsonResponse
@@ -60,6 +52,7 @@ class SessionController extends Controller
         $request->session()->regenerateToken();
         return response()->json(['message' => 'You have been successfully logged out!']);
     }
+
 
     public function forgotPassword(Request $request): JsonResponse
     {
@@ -83,7 +76,10 @@ class SessionController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            return response()->json(['error' => 'You cannot reuse your old password.'], 422);
+            return response()->json([
+                'message' => 'You cannot reuse your old password.',
+                'errors' => ['password' => ['You cannot reuse your old password.']]
+            ], 422);
         }
 
         $status = Password::reset(
@@ -100,7 +96,46 @@ class SessionController extends Controller
         if ($status == Password::PASSWORD_RESET) {
             return response()->json(['status' => 'Password has been reset.']);
         } else {
-            return response()->json(['error' => 'Failed to reset password.'], 422);
+            return response()->json([
+                'message' => 'Token expired.',
+                'errors' => ['password' => ['Token expired.']]
+            ], 422);
         }
     }
+
+    public function resendResetLink(Request $request): JsonResponse
+    {
+        $request->validate(['email' => 'required|email']);
+
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['status' => 'success', 'message' => __($status)]);
+        }
+
+        return response()->json(['status' => 'error', 'message' => __($status)], 400);
+    }
+
+    public function checkTokenValid(Request $request): JsonResponse
+    {
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+    
+        $tokenStatus = Password::tokenExists($user, $request->token);
+    
+        if (!$tokenStatus) {
+            return response()->json([
+                'message' => 'Token expired or invalid.',
+                'status' => 'invalid'
+            ], 422);
+        }
+    
+        return response()->json(['status' => 'valid']);
+    }
+    
+
+
+
 }

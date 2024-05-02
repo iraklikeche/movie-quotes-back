@@ -52,7 +52,7 @@ class CustomVerifyEmail extends Notification
         $tempUrl = URL::temporarySignedRoute(
             'verification.verify',
             Carbon::now()->addMinutes($expires),
-            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
+            ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification()), 'email' => $notifiable->getEmailForVerification()]
         );
 
         $fullUrl = config('app.frontend_url') . '/?verify_url=' . urlencode($tempUrl);
