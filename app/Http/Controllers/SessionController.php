@@ -37,7 +37,7 @@ class SessionController extends Controller
             return $user->hasVerifiedEmail();
         }, $remember)) {
 
-            $request->session()->regenerate();
+            session()->regenerate();
             return response()->json(['message' => __('auth.login_success')]);
         }
 
@@ -48,8 +48,9 @@ class SessionController extends Controller
     public function logout(Request $request): JsonResponse
     {
         auth('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        session()->invalidate();
+
+        session()->regenerateToken();
         return response()->json(['message' => 'You have been successfully logged out!']);
     }
 
@@ -122,19 +123,19 @@ class SessionController extends Controller
         if (!$user) {
             return response()->json(['message' => 'User not found.'], 404);
         }
-    
+
         $tokenStatus = Password::tokenExists($user, $request->token);
-    
+
         if (!$tokenStatus) {
             return response()->json([
                 'message' => 'Token expired or invalid.',
                 'status' => 'invalid'
             ], 422);
         }
-    
+
         return response()->json(['status' => 'valid']);
     }
-    
+
 
 
 

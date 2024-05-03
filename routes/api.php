@@ -22,11 +22,9 @@ Route::controller(SessionController::class)->group(function () {
         Route::post('/reset-password', 'resetPassword');
         Route::post('/reset-password/resend', 'resendResetLink');
         Route::post('/check-token-validity', 'checkTokenValid');
-
-
     });
 
-    Route::post('/logout', 'logout')->middleware('auth:sanctum');
+    Route::post('/logout', 'logout')->middleware('auth:sanctum')->name('logout');
 
 });
 
