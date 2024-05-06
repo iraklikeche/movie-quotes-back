@@ -4,8 +4,6 @@ use App\Models\User;
 
 beforeEach(function () {
     $this->withSession([]);
-    \Illuminate\Support\Facades\Artisan::call('migrate');
-
 });
 
 test('user can log out', function () {
@@ -15,6 +13,6 @@ test('user can log out', function () {
 
 
 test('unauthenticated users cannot log out', function () {
-    $response = $this->postJson('/api/logout');
+    $response = $this->postJson(route('logout'));
     $response->assertUnauthorized();
 });

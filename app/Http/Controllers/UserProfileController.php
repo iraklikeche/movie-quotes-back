@@ -17,13 +17,12 @@ class UserProfileController extends Controller
             $user->username = $data['new_username'];
         }
 
-
         if (isset($data['new_password'])) {
             $user->password = bcrypt($data['new_password']);
         }
 
         $user->save();
 
-        return response()->json(['message' => 'Profile updated successfully!','new_username' => $user->username]);
+        return response()->json(['message' => 'Profile updated successfully!']);
     }
 }
