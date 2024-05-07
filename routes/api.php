@@ -4,15 +4,19 @@ use App\Http\Controllers\Auth\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\CheckLoggedIn;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/user', [UserController::class, 'authenticatedUser']);
 
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/user/update', [UserProfileController::class, 'update'])->name('user.update');
+});
 
 Route::controller(SessionController::class)->group(function () {
     Route::middleware([CheckLoggedIn::class])->group(function () {
@@ -21,9 +25,10 @@ Route::controller(SessionController::class)->group(function () {
         Route::post('/forgot-password', 'forgotPassword');
         Route::post('/reset-password', 'resetPassword');
         Route::post('/reset-password/resend', 'resendResetLink');
+        Route::post('/check-token-validity', 'checkTokenValid');
     });
 
-    Route::post('/logout', 'logout')->middleware('auth:sanctum');
+    Route::post('/logout', 'logout')->middleware('auth:sanctum')->name('logout');
 
 });
 

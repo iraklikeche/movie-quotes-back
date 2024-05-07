@@ -33,7 +33,7 @@ return [
     ],
     'boolean' => ':attribute უნდა იყოს true ან false.',
     'can' => ':attribute შეიცავს არაავტორიზებულ ღირებულებას.',
-    'confirmed' => ':attribute დადასტურება არ მეთხოვება.',
+    'confirmed' => ':attribute პაროლები არ ემთხვევა.',
     'current_password' => 'პაროლი არასწორია.',
     'date' => ':attribute უნდა იყოს მართებული თარიღი.',
     'date_equals' => ':attribute უნდა იყოს თარიღი ტოლი :date.',
