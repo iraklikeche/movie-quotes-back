@@ -10,7 +10,8 @@ class UpdateUserProfileRequest extends FormRequest
     {
         return [
             'new_username' => 'sometimes|required|string|min:3|max:255',
-            'new_password' => 'sometimes|required|min:8|confirmed'
+            'new_password' => 'sometimes|required|min:8|confirmed',
+            'profile_image' => 'sometimes|image|max:2048',
         ];
     }
 }
