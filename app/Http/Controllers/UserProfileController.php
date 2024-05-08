@@ -10,7 +10,7 @@ class UserProfileController extends Controller
     public function update(UpdateUserProfileRequest $request)
     {
         $user = Auth::user();
-        $data = $request->only('new_username', 'new_password', 'new_password_confirmation', 'profile_image');
+        $data = $request->only('new_username', 'new_password', 'new_password_confirmation');
         if (isset($data['new_username'])) {
             $user->username = $data['new_username'];
         }
@@ -20,12 +20,14 @@ class UserProfileController extends Controller
         }
 
         if ($request->hasFile('profile_image')) {
-            $path = $request->file('profile_image')->store('profile_images', 'public');
-            $user->profile_image = $path;
+            $user->addMediaFromRequest('profile_image')->toMediaCollection('profile_images');
         }
 
         $user->save();
 
-        return response()->json(['message' => 'Profile updated successfully!']);
+        return response()->json([
+            'message' => 'Profile updated successfully!',
+        ]);
+
     }
 }
