@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements HasMedia, MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
     use HasApiTokens;
+    use InteractsWithMedia;
+
 
     public function sendEmailVerificationNotification()
     {
@@ -25,6 +29,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new CustomResetPassNotification($token, $this->email));
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_images')
+             ->useDisk('public')
+             ->singleFile();
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -34,7 +45,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'username',
         'email',
         'password',
-        'profile_image',
         'google_id','email_verified_at'
     ];
 
@@ -59,5 +69,11 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getProfileImageUrlAttribute()
+    {
+        $mediaItem = $this->getFirstMedia('profile_images');
+        return $mediaItem ? $mediaItem->getUrl() : null;
     }
 }
