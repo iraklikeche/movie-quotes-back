@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserProfileRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserProfileController extends Controller
 {
     public function update(UpdateUserProfileRequest $request)
     {
+
+
         $user = Auth::user();
+        $data = $request->validated();
         $data = $request->only('new_username', 'new_password', 'new_password_confirmation');
         if (isset($data['new_username'])) {
             $user->username = $data['new_username'];

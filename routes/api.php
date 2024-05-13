@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\GenreController;
+use App\Http\Controllers\MovieController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -60,3 +62,9 @@ Route::get('/auth/callback', function () {
     return response()->json(['success' => 'YAY!']);
 
 });
+
+Route::get('/genres', [GenreController::class, 'index']);
+
+Route::post('/movies', [MovieController::class, 'store']);
+Route::get('/movies', [MovieController::class, 'index']);
+Route::get('/movies/{id}', [MovieController::class, 'show']);
