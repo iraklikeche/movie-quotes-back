@@ -19,9 +19,7 @@ class GenreResource extends JsonResource
 
         return [
             'id' => $this->id,
-            'name' => $locale === 'ka' ? $this->name_ka : $this->name_en,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'name' => $this->getTranslation('name', $locale),
         ];
     }
 }

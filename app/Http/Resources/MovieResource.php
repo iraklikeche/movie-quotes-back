@@ -15,16 +15,9 @@ class MovieResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        // $imageUrl = $this->media->first()?->getUrl() ?? null;
-
-        // return [
-        //     'movie_en' => $this->movie_en,
-        //     'movie_ka' => $this->movie_ka,
-        //     'year' => $this->year,
-        //     'image_url' => $imageUrl,
-        // ];
         $locale = $request->header('Accept-Language', 'en');
-        $movieName = $locale === 'ka' ? $this->movie_ka : $this->movie_en;
+
+        $movieName = $this->resource->getTranslation('name', $locale);
 
         $imageUrl = $this->media->first()?->getUrl() ?? null;
 
@@ -32,7 +25,6 @@ class MovieResource extends JsonResource
             'id' => $this->id,
             'movie_name' => $movieName,
             'year' => $this->year,
-          
             'image_url' => $imageUrl,
         ];
     }

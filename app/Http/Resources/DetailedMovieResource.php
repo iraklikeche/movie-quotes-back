@@ -10,9 +10,9 @@ class DetailedMovieResource extends JsonResource
     public function toArray(Request $request): array
     {
         $locale = $request->header('Accept-Language', 'en');
-        $movieName = $locale === 'ka' ? $this->movie_ka : $this->movie_en;
-        $director = $locale === 'ka' ? $this->director_ka : $this->director_en;
-        $description = $locale === 'ka' ? $this->description_ka : $this->description_en;
+        $movieName = $this->getTranslation('name', $locale);
+        $director = $this->getTranslation('director', $locale);
+        $description = $this->getTranslation('description', $locale);
         $imageUrl = $this->media->first()?->getUrl() ?? null;
 
         return [

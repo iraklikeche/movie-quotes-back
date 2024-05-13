@@ -12,13 +12,11 @@ return new class () extends Migration {
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->string('movie_en');
-            $table->string('movie_ka');
+
+            $table->json('name');
+            $table->json('director');
+            $table->json('description');
             $table->integer('year');
-            $table->string('director_en');
-            $table->string('director_ka');
-            $table->text('description_en');
-            $table->text('description_ka');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

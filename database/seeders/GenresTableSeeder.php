@@ -18,8 +18,10 @@ class GenresTableSeeder extends Seeder
         $genres = Config::get('genres');
         foreach ($genres as $genre) {
             DB::table('genres')->insert([
-                'name_en' => $genre['en'],
-                'name_ka' => $genre['ka']
+                'name' => json_encode([
+                    'en' => $genre['en'],
+                    'ka' => $genre['ka']
+                ])
             ]);
         }
 

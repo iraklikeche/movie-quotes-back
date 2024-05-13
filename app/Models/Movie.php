@@ -7,13 +7,22 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Movie extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use HasTranslations;
+
+    public $translatable = ['name', 'director', 'description'];
 
     protected $guarded = ['id'];
+    protected $casts = [
+        'name' => 'array',
+        'director' => 'array',
+        'description' => 'array',
+    ];
 
     public function user()
     {

@@ -65,6 +65,8 @@ Route::get('/auth/callback', function () {
 
 Route::get('/genres', [GenreController::class, 'index']);
 
-Route::post('/movies', [MovieController::class, 'store']);
-Route::get('/movies', [MovieController::class, 'index']);
-Route::get('/movies/{id}', [MovieController::class, 'show']);
+Route::prefix('movies')->controller(MovieController::class)->group(function () {
+    Route::post('/', 'store');
+    Route::get('/', 'index');
+    Route::get('/{id}', 'show');
+});
