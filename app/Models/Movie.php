@@ -33,6 +33,11 @@ class Movie extends Model implements HasMedia
         return $this->belongsToMany(Genre::class);
     }
 
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
+
     public function getMediaUrlsAttribute()
     {
         return $this->getMedia('movies')->map(function (Media $media) {

@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\QuoteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UserController;
@@ -69,4 +72,19 @@ Route::prefix('movies')->controller(MovieController::class)->group(function () {
     Route::post('/', 'store');
     Route::get('/', 'index');
     Route::get('/{id}', 'show');
+    Route::delete('/{id}', 'destroy');
+    Route::put('/{id}', 'update');
+});
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::prefix('quotes')->name('quotes.')->group(function () {
+        Route::get('/', [QuoteController::class, 'index'])->name('index');
+        Route::get('/{id}', [QuoteController::class, 'show'])->name('show');
+        Route::post('/', [QuoteController::class, 'store'])->name('store');
+
+        Route::post('/{quoteId}/comments', [CommentController::class, 'store'])->name('comments.store');
+
+        Route::post('/{quoteId}/likes', [LikeController::class, 'store'])->name('likes.store');
+    });
 });
