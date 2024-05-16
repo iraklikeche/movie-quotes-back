@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuoteRequest;
 use App\Models\Quote;
+use Illuminate\Support\Facades\Auth;
 
 class QuoteController extends Controller
 {
@@ -21,10 +22,11 @@ class QuoteController extends Controller
         }
 
         $quote->load('user', 'movie');
+        $quote->user->append('profile_image_url');
 
         return response()->json([
             'message' => 'Quote created successfully!',
-            'quote' => $quote->toArray() + ['image_url' => $quote->image_url]
+            'quote' => $quote
         ], 201);
     }
 
@@ -36,7 +38,16 @@ class QuoteController extends Controller
 
     public function index()
     {
-        $quotes = Quote::with(['user', 'movie'])->latest()->get();
+        $quotes = Quote::with(['user', 'movie','comments', 'likes'])->latest()->get();
+        $userId = Auth::id();
+
+        $quotes->each(function ($quote) use ($userId) {
+            $quote->append('image_url');
+            $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
+            $quote->like_count = $quote->likes->count();
+            $quote->user->append('profile_image_url');
+        });
+
         return response()->json($quotes);
     }
 }

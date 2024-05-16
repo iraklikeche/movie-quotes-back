@@ -3,23 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\Quote;
 use Illuminate\Http\Request;
 
 class LikeController extends Controller
 {
     public function store($quoteId)
     {
-        $like = Like::where('user_id', auth()->id())->where('quote_id', $quoteId)->first();
+        $user = auth()->user();
+        $quote = Quote::findOrFail($quoteId);
+
+        $like = Like::where('user_id', $user->id)->where('quote_id', $quoteId)->first();
 
         if ($like) {
             $like->delete();
+            $likeCount = $quote->likes()->count();
+            return response()->json(['message' => 'Like removed successfully!']);
         } else {
-            $like = Like::create([
-                'user_id' => auth()->id(),
+            Like::create([
+                'user_id' => $user->id,
                 'quote_id' => $quoteId,
             ]);
-        }
+            $likeCount = $quote->likes()->count();
 
-        return response()->json(['message' => 'Like toggled successfully!', 'like' => $like], 200);
+            return response()->json(['message' => 'Like added successfully!','like_count' => $likeCount]);
+        }
     }
 }

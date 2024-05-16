@@ -133,16 +133,16 @@ return [
     'prohibited_unless' => ':attribute არის აკრძალული, გარდა თუ :other არის :value.',
     'prohibits' => ':attribute აკრძალავს :other-ის ყოფნას.',
     'regex' => ':attribute ფორმატი არასწორია.',
-    'required' => ':attribute არის საჭირო.',
+    'required' => ':attribute სავალდებულოა.',
     'required_array_keys' => ':attribute უნდა შეიცავდეს გასაღებებს: :values.',
-    'required_if' => ':attribute არის საჭირო, როდესაც :other არის :value.',
-    'required_if_accepted' => ':attribute არის საჭირო, როდესაც :other არის მიღებული.',
-    'required_if_declined' => ':attribute არის საჭირო, როდესაც :other არის უარყოფილი.',
-    'required_unless' => ':attribute არის საჭირო, გარდა თუ :other არის :values.',
-    'required_with' => ':attribute არის საჭირო, როდესაც :values არის მასივში.',
-    'required_with_all' => ':attribute არის საჭირო, როდესაც :values არის მასივში.',
-    'required_without' => ':attribute არის საჭირო, როდესაც :values არაა მასივში.',
-    'required_without_all' => ':attribute არის საჭირო, როდესაც :values არაა მასივში.',
+    'required_if' => ':attribute სავალდებულოა, როდესაც :other არის :value.',
+    'required_if_accepted' => ':attribute სავალდებულოა, როდესაც :other არის მიღებული.',
+    'required_if_declined' => ':attribute სავალდებულოა, როდესაც :other არის უარყოფილი.',
+    'required_unless' => ':attribute სავალდებულოა, გარდა თუ :other არის :values.',
+    'required_with' => ':attribute სავალდებულოა, როდესაც :values არის მასივში.',
+    'required_with_all' => ':attribute სავალდებულოა, როდესაც :values არის მასივში.',
+    'required_without' => ':attribute სავალდებულოა, როდესაც :values არაა მასივში.',
+    'required_without_all' => ':attribute სავალდებულოა, როდესაც :values არაა მასივში.',
     'same' => ':attribute და :other უნდა იყოს იგივე.',
     'size' => [
         'array' => ':attribute უნდა შეიცავდეს :size ელემენტს.',
@@ -188,6 +188,16 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name.en'                      => 'სახელი',
+        'name.ka'                      => 'სახელი',
+        'description.en'               => 'აღწერა',
+        'description.ka'               => 'აღწერა',
+        'director.en'                     => 'რეჟისორი',
+        'director.ka'                     => 'რეჟისორი',
+        'content.ka'                     => 'ციტატა',
+        'content.en'                     => 'ციტატა',
+
+    ],
 
 ];
