@@ -30,12 +30,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         $this->notify(new CustomResetPassNotification($token, $this->email));
     }
 
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection('profile_images')
-             ->useDisk('public')
-             ->singleFile();
-    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -71,9 +66,37 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         ];
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('profile_images')
+             ->useDisk('public')
+             ->singleFile();
+    }
+
     public function getProfileImageUrlAttribute()
     {
         $mediaItem = $this->getFirstMedia('profile_images');
         return $mediaItem ? $mediaItem->getUrl() : null;
     }
+
+    public function movies()
+    {
+        return $this->hasMany(Movie::class);
+    }
+
+    public function quotes()
+    {
+        return $this->hasMany(Quote::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
 }
