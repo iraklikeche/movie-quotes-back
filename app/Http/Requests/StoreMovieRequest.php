@@ -10,12 +10,46 @@ class StoreMovieRequest extends FormRequest
     {
         return [
 
-            'name.en' => ['required', 'string', 'max:255'],
-            'name.ka' => ['required', 'string', 'max:255'],
-            'director.en' => ['required', 'string', 'max:255'],
-            'director.ka' => ['required', 'string', 'max:255'],
-            'description.en' => ['required', 'string'],
-            'description.ka' => ['required', 'string'],
+            'name.en' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'name.ka' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[ა-ჰ\s]+$/'
+            ],
+            'director.en' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'director.ka' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:255',
+                'regex:/^[ა-ჰ\s]+$/'
+            ],
+            'description.en' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^[a-zA-Z\s]+$/'
+            ],
+            'description.ka' => [
+                'sometimes',
+                'required',
+                'string',
+                'regex:/^[ა-ჰ\s]+$/'
+            ],
             'year' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'genres' => 'required|array',
