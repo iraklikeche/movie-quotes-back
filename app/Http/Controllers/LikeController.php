@@ -18,15 +18,14 @@ class LikeController extends Controller
         if ($like) {
             $like->delete();
             $likeCount = $quote->likes()->count();
-            return response()->json(['message' => 'Like removed successfully!']);
+            return response()->json(['message' => 'Like removed successfully!', 'like_count' => $likeCount]);
         } else {
             Like::create([
                 'user_id' => $user->id,
                 'quote_id' => $quoteId,
             ]);
             $likeCount = $quote->likes()->count();
-
-            return response()->json(['message' => 'Like added successfully!','like_count' => $likeCount]);
+            return response()->json(['message' => 'Like added successfully!', 'like_count' => $likeCount]);
         }
     }
 }
