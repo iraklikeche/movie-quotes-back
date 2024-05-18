@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
-use Illuminate\Support\Str;
 
 class QuoteController extends Controller
 {
@@ -26,7 +25,6 @@ class QuoteController extends Controller
         }
 
         $quote->load('user', 'movie');
-        $quote->user->append('profile_image_url');
 
         return response()->json([
             'message' => 'Quote created successfully!',
@@ -78,7 +76,6 @@ class QuoteController extends Controller
             $quote->append('image_url');
             $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
             $quote->like_count = $quote->likes->count();
-            $quote->user->append('profile_image_url');
         });
 
         return response()->json($quotes);

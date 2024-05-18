@@ -66,6 +66,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         ];
     }
 
+    protected $appends = ['profile_image_url'];
+
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_images')
