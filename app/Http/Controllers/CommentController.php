@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
-use Illuminate\Http\Request;
+use App\Models\Quote;
 
 class CommentController extends Controller
 {
@@ -17,6 +17,18 @@ class CommentController extends Controller
             'quote_id' => $quoteId,
         ]);
 
+        $comment->load('user');
+
+
         return response()->json(['message' => 'Comment added successfully!', 'comment' => $comment], 201);
+    }
+
+
+    public function index($quoteId)
+    {
+        $quote = Quote::findOrFail($quoteId);
+        $comments = $quote->comments()->with('user')->latest()->get();
+
+        return response()->json($comments);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -12,6 +13,7 @@ class Quote extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+
     protected $fillable = ['content', 'user_id', 'movie_id'];
 
     public $translatable = ['content'];
@@ -46,4 +48,29 @@ class Quote extends Model implements HasMedia
     {
         return $this->getFirstMediaUrl('images');
     }
+
+    public function scopeFilterContentEn(Builder $query, $content)
+    {
+        return $query->where('content->en', 'LIKE', "%{$content}%");
+    }
+    
+    public function scopeFilterContentKa(Builder $query, $content)
+    {
+        return $query->where('content->ka', 'LIKE', "%{$content}%");
+    }
+    
+    public function scopeFilterMovieNameEn(Builder $query, $name)
+    {
+        return $query->whereHas('movie', function ($query) use ($name) {
+            $query->where('name->en', 'LIKE', "%{$name}%");
+        });
+    }
+    
+    public function scopeFilterMovieNameKa(Builder $query, $name)
+    {
+        return $query->whereHas('movie', function ($query) use ($name) {
+            $query->where('name->ka', 'LIKE', "%{$name}%");
+        });
+    }
+
 }
