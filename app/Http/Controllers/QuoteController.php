@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuoteRequest;
+use App\Http\Requests\UpdateQuoteRequest;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,6 +82,59 @@ class QuoteController extends Controller
         return response()->json($quotes);
     }
 
+    public function quotesByMovie($movieId)
+    {
+        $userId = Auth::id();
+        $quotes = Quote::where('movie_id', $movieId)
+            ->with(['user', 'comments', 'likes'])
+            ->latest()
+            ->get();
 
+        $quotes->each(function ($quote) use ($userId) {
+            $quote->append('image_url');
+            $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
+            $quote->like_count = $quote->likes->count();
+        });
+
+        return response()->json($quotes);
+    }
+
+    public function destroy($id)
+    {
+        $quote = Quote::findOrFail($id);
+
+        if ($quote->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $quote->delete();
+
+        return response()->json(['message' => 'Quote deleted successfully!']);
+    }
+
+    public function update(UpdateQuoteRequest $request, $id)
+    {
+        $quote = Quote::findOrFail($id);
+
+
+        if ($quote->user_id !== Auth::id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $quote->update([
+            'content' => $request->input('content'),
+            'movie_id' => $request->input('movie_id'),
+        ]);
+
+        if ($request->hasFile('image')) {
+            $quote->clearMediaCollection('images');
+            $quote->addMedia($request->file('image'))->toMediaCollection('images');
+        }
+
+        $quote->load('user', 'movie');
+        $quote->user->append('profile_image_url');
+
+        return response()->json(['message' => 'Quote updated successfully!', 'quote' => $quote]);
+    }
 
 }
