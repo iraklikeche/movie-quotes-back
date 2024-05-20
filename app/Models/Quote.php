@@ -15,6 +15,7 @@ class Quote extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = ['content', 'user_id', 'movie_id'];
+    protected $appends = ['image_url'];
 
     public $translatable = ['content'];
 
@@ -53,24 +54,26 @@ class Quote extends Model implements HasMedia
     {
         return $query->where('content->en', 'LIKE', "%{$content}%");
     }
-    
+
     public function scopeFilterContentKa(Builder $query, $content)
     {
         return $query->where('content->ka', 'LIKE', "%{$content}%");
     }
-    
+
     public function scopeFilterMovieNameEn(Builder $query, $name)
     {
         return $query->whereHas('movie', function ($query) use ($name) {
             $query->where('name->en', 'LIKE', "%{$name}%");
         });
     }
-    
+
     public function scopeFilterMovieNameKa(Builder $query, $name)
     {
         return $query->whereHas('movie', function ($query) use ($name) {
             $query->where('name->ka', 'LIKE', "%{$name}%");
         });
     }
+
+
 
 }

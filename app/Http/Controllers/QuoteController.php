@@ -87,13 +87,12 @@ class QuoteController extends Controller
         $userId = Auth::id();
         $quotes = Quote::where('movie_id', $movieId)
             ->with(['user', 'comments', 'likes'])
+            ->withCount(['likes', 'comments'])
             ->latest()
             ->get();
 
         $quotes->each(function ($quote) use ($userId) {
-            $quote->append('image_url');
             $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
-            $quote->like_count = $quote->likes->count();
         });
 
         return response()->json($quotes);
@@ -116,15 +115,23 @@ class QuoteController extends Controller
     {
         $quote = Quote::findOrFail($id);
 
-
         if ($quote->user_id !== Auth::id()) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $quote->update([
-            'content' => $request->input('content'),
-            'movie_id' => $request->input('movie_id'),
-        ]);
+        $content = $quote->content;
+
+        if ($request->has('content.en')) {
+            $content['en'] = $request->input('content.en');
+        }
+        if ($request->has('content.ka')) {
+            $content['ka'] = $request->input('content.ka');
+        }
+
+        $data = $request->only(['movie_id']);
+        $data['content'] = $content;
+
+        $quote->update($data);
 
         if ($request->hasFile('image')) {
             $quote->clearMediaCollection('images');
@@ -136,5 +143,4 @@ class QuoteController extends Controller
 
         return response()->json(['message' => 'Quote updated successfully!', 'quote' => $quote]);
     }
-
 }

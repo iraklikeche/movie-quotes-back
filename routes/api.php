@@ -86,7 +86,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', [QuoteController::class, 'store'])->name('store');
         Route::get('/', [QuoteController::class, 'index'])->name('index');
         Route::get('/{id}', [QuoteController::class, 'show'])->name('show');
-        Route::put('/{id}', [QuoteController::class, 'update'])->name('update');
+        Route::patch('/{id}', [QuoteController::class, 'update'])->name('update');
         Route::delete('/{id}', [QuoteController::class, 'destroy'])->name('destroy');
 
         Route::post('/{quoteId}/comments', [CommentController::class, 'store'])->name('comments.store');
