@@ -119,14 +119,8 @@ class QuoteController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $content = $quote->content;
+        $content = array_merge($quote->content, $request->input('content', []));
 
-        if ($request->has('content.en')) {
-            $content['en'] = $request->input('content.en');
-        }
-        if ($request->has('content.ka')) {
-            $content['ka'] = $request->input('content.ka');
-        }
 
         $data = $request->only(['movie_id']);
         $data['content'] = $content;
