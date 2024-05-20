@@ -74,18 +74,23 @@ Route::prefix('movies')->controller(MovieController::class)->group(function () {
     Route::get('/{id}', 'show');
     Route::delete('/{id}', 'destroy');
     Route::put('/{id}', 'update');
+    Route::delete('/{id}', [QuoteController::class, 'destroy'])->name('destroy');
+
 });
+
+Route::get('/movies/{movieId}/quotes', [QuoteController::class, 'quotesByMovie'])->name('quotesByMovie');
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::prefix('quotes')->name('quotes.')->group(function () {
+        Route::post('/', [QuoteController::class, 'store'])->name('store');
         Route::get('/', [QuoteController::class, 'index'])->name('index');
         Route::get('/{id}', [QuoteController::class, 'show'])->name('show');
-        Route::post('/', [QuoteController::class, 'store'])->name('store');
+        Route::patch('/{id}', [QuoteController::class, 'update'])->name('update');
+        Route::delete('/{id}', [QuoteController::class, 'destroy'])->name('destroy');
 
         Route::post('/{quoteId}/comments', [CommentController::class, 'store'])->name('comments.store');
         Route::get('/{quoteId}/comments', [CommentController::class, 'index'])->name('comments.index');
-
 
         Route::post('/{quoteId}/likes', [LikeController::class, 'store'])->name('likes.store');
     });
