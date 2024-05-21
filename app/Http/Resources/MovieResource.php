@@ -16,9 +16,7 @@ class MovieResource extends JsonResource
     {
 
         $locale = $request->header('Accept-Language', 'en');
-
         $movieName = $this->resource->getTranslation('name', $locale);
-
         $imageUrl = $this->media->first()?->getUrl() ?? null;
 
         return [

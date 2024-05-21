@@ -53,6 +53,7 @@ class QuoteController extends Controller
                 AllowedFilter::scope('movie_name_ka', 'filterMovieNameKa')
             ])
             ->with(['user', 'movie', 'comments', 'likes'])
+            ->withCount(['likes'])
             ->latest();
 
         if (!empty($searchQuery)) {
@@ -76,7 +77,6 @@ class QuoteController extends Controller
         $quotes->each(function ($quote) use ($userId) {
             $quote->append('image_url');
             $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
-            $quote->like_count = $quote->likes->count();
         });
 
         return response()->json($quotes);
@@ -93,6 +93,7 @@ class QuoteController extends Controller
 
         $quotes->each(function ($quote) use ($userId) {
             $quote->liked_by_user = $quote->likes->contains('user_id', $userId);
+
         });
 
         return response()->json($quotes);

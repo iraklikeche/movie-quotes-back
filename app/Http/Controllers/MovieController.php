@@ -58,15 +58,27 @@ class MovieController extends Controller
     public function update(UpdateMovieRequest $request, $id)
     {
         $movie = Movie::findOrFail($id);
-        $movie->fill($request->validated());
-        if ($request->has('genres')) {
-            $movie->genres()->sync($request->genres);
+
+        $validatedData = $request->validated();
+        $genres = $validatedData['genres'] ?? null;
+        unset($validatedData['genres']);
+
+        $movie->fill($validatedData);
+
+        if ($genres) {
+            $movie->genres()->sync($genres);
         }
+
         if ($request->hasFile('image')) {
+            $movie->clearMediaCollection('movies');
             $movie->addMediaFromRequest('image')->toMediaCollection('movies');
         }
+
+        $movie->load('genres', 'media');
         $movie->save();
-        return new MovieResource($movie);
+        return new DetailedMovieResource($movie);
     }
+
+
 
 }

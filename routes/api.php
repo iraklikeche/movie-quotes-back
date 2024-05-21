@@ -73,7 +73,7 @@ Route::prefix('movies')->controller(MovieController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}', 'show');
     Route::delete('/{id}', 'destroy');
-    Route::put('/{id}', 'update');
+    Route::patch('/{id}', 'update');
     Route::delete('/{id}', [QuoteController::class, 'destroy'])->name('destroy');
 
 });
