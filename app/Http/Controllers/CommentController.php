@@ -18,8 +18,6 @@ class CommentController extends Controller
         ]);
 
         $comment->load('user');
-
-
         return response()->json(['message' => 'Comment added successfully!', 'comment' => $comment], 201);
     }
 
@@ -28,7 +26,6 @@ class CommentController extends Controller
     {
         $quote = Quote::findOrFail($quoteId);
         $comments = $quote->comments()->with('user')->latest()->get();
-
         return response()->json($comments);
     }
 }
