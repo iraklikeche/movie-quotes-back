@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\QuoteLiked;
 use App\Models\Like;
 use App\Models\Quote;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LikeController extends Controller
 {
@@ -29,6 +31,9 @@ class LikeController extends Controller
             $likedByUser = true;
 
             $likeCount = $quote->likes()->count();
+            event(new QuoteLiked($quote, $user));
+            Log::info('QuoteLiked event dispatched', ['quote_id' => $quote->id]);
+
             return response()->json(['message' => 'Like added successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);
         }
 
