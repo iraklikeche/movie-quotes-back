@@ -2,10 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Events\QuoteLiked;
 use App\Notifications\QuoteLikedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Log;
 
 class SendQuoteLikedNotification
 {
@@ -17,13 +15,9 @@ class SendQuoteLikedNotification
         //
     }
 
-    /**
-     * Handle the event.
-     */
-    public function handle(object $event): void
+    public function handle(QuoteLiked $event)
     {
 
-        $event->quote->user->notify(new QuoteLikedNotification($event->quote));
-
+        $event->quote->user->notify(new QuoteLikedNotification($event->quote, $event->user));
     }
 }

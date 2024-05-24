@@ -5,13 +5,9 @@ namespace App\Events;
 use App\Models\Quote;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class QuoteLiked implements ShouldBroadcast
 {
@@ -23,7 +19,8 @@ class QuoteLiked implements ShouldBroadcast
     public $quote;
     public $message;
     public $user;
-
+    public $time;
+    public $read_at;
 
     /**
      * Create a new event instance.
@@ -32,9 +29,9 @@ class QuoteLiked implements ShouldBroadcast
     {
         $this->quote = $quote;
         $this->user = $user;
-        $this->message = [
-            'Your quote was liked by ', $user
-        ];
+        $this->message = 'Your quote was liked by ' . $user->username;
+        $this->read_at = null;
+        $this->time = now()->diffForHumans();
     }
 
     /**
@@ -44,8 +41,18 @@ class QuoteLiked implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('quote.' . $this->quote->id);
+        return new Channel('App.Models.User.' . $this->quote->user_id);
+
     }
 
-
+    public function broadcastWith()
+    {
+        return [
+            'quote' => $this->quote,
+            'user' => $this->user,
+            'message' => $this->message,
+            'read_at' => $this->read_at,
+            'time' => now()->diffForHumans(),
+        ];
+    }
 }

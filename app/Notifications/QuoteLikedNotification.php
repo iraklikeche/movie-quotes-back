@@ -13,13 +13,17 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
     public $quote;
+    public $user;
+
+
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(Quote $quote)
+    public function __construct(Quote $quote, $user)
     {
         $this->quote = $quote;
+        $this->user = $user;
 
     }
 
@@ -30,42 +34,34 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database', 'broadcast'];
+        return [ 'database', 'broadcast',];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage())
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(object $notifiable): array
     {
         return [
             'quote_id' => $this->quote->id,
-            'message' => 'Your quote was liked!232323',
+            'user' => $this->user,
+            'user_id' => $this->user->id,
+            'username' => $this->user->username,
+            'image' => $this->user->profile_image_url,
+            'message' => 'Your quote was liked!',
+            'time' => now()->toDateTimeString(),
         ];
     }
+
 
     public function toBroadcast($notifiable)
     {
-        $data = [
+
+        return new BroadcastMessage([
             'quote_id' => $this->quote->id,
-            'message' => 'Your quote was liked!434343',
-        ];
-
-
-        return new BroadcastMessage($data);
+            'user' => $this->user,
+            'user_id' => $this->user->id,
+            'username' => $this->user->username,
+            'image' => $this->user->profile_image_url,
+            'message' => 'Your quote was liked!',
+            'time' => now()->toDateTimeString(),
+        ]);
     }
-
 }
