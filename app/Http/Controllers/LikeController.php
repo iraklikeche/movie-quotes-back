@@ -32,7 +32,7 @@ class LikeController extends Controller
 
             $likeCount = $quote->likes()->count();
 
-            event(new QuoteLiked($quote, $user));
+            event(new QuoteLiked($quote, $user, $likeCount));
             Log::info('QuoteLiked event dispatched', ['quote_id' => $quote->id]);
 
             return response()->json(['message' => 'Like added successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);

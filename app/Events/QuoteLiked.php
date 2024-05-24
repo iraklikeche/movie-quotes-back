@@ -21,17 +21,23 @@ class QuoteLiked implements ShouldBroadcast
     public $user;
     public $time;
     public $read_at;
+    public $likeCount;
+    public $likedByUser;
+
 
     /**
      * Create a new event instance.
      */
-    public function __construct(Quote $quote, $user)
+    public function __construct(Quote $quote, $user, $likeCount)
     {
         $this->quote = $quote;
         $this->user = $user;
-        $this->message = 'Your quote was liked by ' . $user->username;
         $this->read_at = null;
+        $this->likeCount = $likeCount;
         $this->time = now()->diffForHumans();
+        $this->message = 'Your quote was liked by ' . $user->username;
+
+
     }
 
     /**
@@ -48,10 +54,12 @@ class QuoteLiked implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
+
             'quote' => $this->quote,
             'user' => $this->user,
             'message' => $this->message,
             'read_at' => $this->read_at,
+        'likeCount' => $this->likeCount,
             'time' => now()->diffForHumans(),
         ];
     }
