@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\QuoteLiked;
+use App\Events\QuoteUnliked;
 use App\Models\Like;
 use App\Models\Quote;
 
@@ -21,6 +22,8 @@ class LikeController extends Controller
             $like->delete();
             $likeCount = $quote->likes()->count();
             $likedByUser = false;
+            event(new QuoteUnliked($quote, $user));
+
 
             return response()->json(['message' => 'Like removed successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);
         } else {
@@ -33,7 +36,7 @@ class LikeController extends Controller
             $likeCount = $quote->likes()->count();
 
             event(new QuoteLiked($quote, $user, $likeCount));
-            Log::info('QuoteLiked event dispatched', ['quote_id' => $quote->id]);
+
 
             return response()->json(['message' => 'Like added successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);
         }
