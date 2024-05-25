@@ -7,8 +7,6 @@ use App\Events\QuoteUnliked;
 use App\Models\Like;
 use App\Models\Quote;
 
-use Illuminate\Support\Facades\Log;
-
 class LikeController extends Controller
 {
     public function store($quoteId)
@@ -22,7 +20,7 @@ class LikeController extends Controller
             $like->delete();
             $likeCount = $quote->likes()->count();
             $likedByUser = false;
-            event(new QuoteUnliked($quote, $user));
+            event(new QuoteUnliked($quote, $user, $likeCount));
 
 
             return response()->json(['message' => 'Like removed successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);
@@ -32,11 +30,9 @@ class LikeController extends Controller
                 'quote_id' => $quoteId,
             ]);
             $likedByUser = true;
-
             $likeCount = $quote->likes()->count();
 
             event(new QuoteLiked($quote, $user, $likeCount));
-
 
             return response()->json(['message' => 'Like added successfully!', 'like_count' => $likeCount,'liked_by_user' => $likedByUser]);
         }

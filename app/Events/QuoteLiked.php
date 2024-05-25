@@ -15,14 +15,12 @@ class QuoteLiked implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
 
-
     public $quote;
     public $message;
     public $user;
     public $time;
     public $read_at;
     public $likeCount;
-    public $likedByUser;
 
 
     /**
@@ -37,18 +35,14 @@ class QuoteLiked implements ShouldBroadcast
         $this->time = now()->diffForHumans();
         $this->message = 'Your quote was liked by ' . $user->username;
 
-
     }
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
     public function broadcastOn()
     {
-        return new Channel('App.Models.User.' . $this->quote->user_id);
-
+        return [
+            new Channel('App.Models.User.' . $this->quote->user_id),
+            new Channel('quote.' . $this->quote->id)
+        ];
     }
 
     public function broadcastWith()
@@ -59,7 +53,7 @@ class QuoteLiked implements ShouldBroadcast
             'user' => $this->user,
             'message' => $this->message,
             'read_at' => $this->read_at,
-        'likeCount' => $this->likeCount,
+            'likeCount' => $this->likeCount,
             'time' => now()->diffForHumans(),
         ];
     }

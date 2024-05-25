@@ -26,14 +26,14 @@ class CommentController extends Controller
         event(new QuoteCommented($quote, $comment, $user, $commentCount));
 
         $comment->load('user');
-        return response()->json(['message' => 'Comment added successfully!', 'comment' => $comment], 201);
+        return response()->json(['message' => 'Comment added successfully!', 'comment' => $comment,'commentCount' =>  $commentCount], 201);
     }
 
 
     public function index($quoteId)
     {
         $quote = Quote::findOrFail($quoteId);
-        $comments = $quote->comments()->with('user')->latest()->get();
+        $comments = $quote->comments()->with('user')->oldest()->get();
         return response()->json($comments);
     }
 }

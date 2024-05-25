@@ -6,13 +6,11 @@ use App\Models\Comment;
 use App\Models\Quote;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class QuoteCommented
+class QuoteCommented implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -20,6 +18,7 @@ class QuoteCommented
     public $quote;
     public $comment;
     public $message;
+    public $read_at;
     public $user;
     public $time;
     public $commentCount;
@@ -32,9 +31,9 @@ class QuoteCommented
         $this->quote = $quote;
         $this->comment = $comment;
         $this->user = $user;
+        $this->read_at = null;
         $this->message = 'Your quote was commented by ' . $user->username;
         $this->commentCount = $commentCount;
-
         $this->time = now()->diffForHumans();
 
     }
@@ -46,7 +45,11 @@ class QuoteCommented
      */
     public function broadcastOn()
     {
-        return new Channel('App.Models.User.' . $this->comment->quote->user_id);
+        return [
+            new Channel('App.Models.User.' . $this->quote->user_id),
+        new Channel('quote.' . $this->quote->id)
+        ];
+
     }
 
     public function broadcastWith()
@@ -56,7 +59,9 @@ class QuoteCommented
             'comment' => $this->comment,
             'user' => $this->user,
             'message' => $this->message,
-            'time' => $this->time,
+            'read_at' => $this->read_at,
+            'commentCount' => $this->commentCount,
+            'time' => $this->time
         ];
     }
 }

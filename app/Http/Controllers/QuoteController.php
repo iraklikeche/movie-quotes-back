@@ -53,7 +53,7 @@ class QuoteController extends Controller
                 AllowedFilter::scope('movie_name_ka', 'filterMovieNameKa')
             ])
             ->with(['user', 'movie', 'comments', 'likes'])
-            ->withCount(['likes'])
+            ->withCount(['likes','comments'])
             ->latest();
 
         if (!empty($searchQuery)) {

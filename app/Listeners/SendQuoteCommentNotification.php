@@ -4,8 +4,6 @@ namespace App\Listeners;
 
 use App\Events\QuoteCommented;
 use App\Notifications\CommentAddedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 
 class SendQuoteCommentNotification
 {
