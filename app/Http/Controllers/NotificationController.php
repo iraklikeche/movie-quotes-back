@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-
 class NotificationController extends Controller
 {
     public function index()
     {
         $user = auth()->user();
-        $notifications = $user->notifications;
+        $notifications = $user->notifications()->orderBy('created_at', 'desc')->get();
 
         return response()->json($notifications);
     }
