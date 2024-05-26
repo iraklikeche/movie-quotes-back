@@ -6,7 +6,6 @@ use App\Models\Quote;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class QuoteLikedNotification extends Notification implements ShouldQueue
@@ -45,7 +44,8 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
             'user_id' => $this->user->id,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
-            'message' => 'Your quote was liked!',
+            'message' => 'Reacted to your quote',
+            'reacted' => true,
             'time' => now()->toDateTimeString(),
         ];
     }
@@ -60,7 +60,8 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
             'user_id' => $this->user->id,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
-            'message' => 'Your quote was liked!',
+            'message' => 'Reacted to your quote',
+            'reacted' => true,
             'time' => now()->toDateTimeString(),
         ]);
     }

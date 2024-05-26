@@ -44,7 +44,8 @@ class CommentAddedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'user_id' => $this->user->id,
             'username' => $this->user->username,
-            'message' => 'Your post received a new comment!',
+            'message' => 'Commented to your movie quote',
+            'commented' => true,
             'time' => now()->toDateTimeString(),
         ];
     }
@@ -56,7 +57,7 @@ class CommentAddedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'user_id' => $this->user->id,
             'username' => $this->user->username,
-            'message' => 'Your post received a new comment!',
+            'commented' => true,
             'time' => now()->toDateTimeString(),
         ]);
     }

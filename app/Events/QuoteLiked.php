@@ -16,10 +16,7 @@ class QuoteLiked implements ShouldBroadcast
     use SerializesModels;
 
     public $quote;
-    public $message;
     public $user;
-    public $time;
-    public $read_at;
     public $likeCount;
 
 
@@ -30,10 +27,7 @@ class QuoteLiked implements ShouldBroadcast
     {
         $this->quote = $quote;
         $this->user = $user;
-        $this->read_at = null;
         $this->likeCount = $likeCount;
-        $this->time = now()->diffForHumans();
-        $this->message = 'Your quote was liked by ' . $user->username;
 
     }
 
@@ -51,8 +45,9 @@ class QuoteLiked implements ShouldBroadcast
 
             'quote' => $this->quote,
             'user' => $this->user,
-            'message' => $this->message,
-            'read_at' => $this->read_at,
+            'message' => 'Reacted to your quote',
+            'reacted' => true,
+            'read_at' => null,
             'likeCount' => $this->likeCount,
             'time' => now()->diffForHumans(),
         ];
