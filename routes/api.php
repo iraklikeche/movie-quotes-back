@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\QuoteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
@@ -79,6 +80,7 @@ Route::prefix('movies')->controller(MovieController::class)->group(function () {
 });
 
 Route::get('/movies/{movieId}/quotes', [QuoteController::class, 'quotesByMovie'])->name('quotesByMovie');
+Route::get('/notifications', [NotificationController::class, 'index']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {
