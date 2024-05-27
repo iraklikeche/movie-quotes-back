@@ -55,6 +55,7 @@ class QuoteCommented implements ShouldBroadcast
             'message' => 'Commented to your movie quote',
             'commented' => true,
             'read_at' => null,
+            'created_at' => now()->toISOString(),
             'time' => now()->diffForHumans(),
             ];
     }

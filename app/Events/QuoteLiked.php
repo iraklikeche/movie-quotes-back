@@ -49,6 +49,7 @@ class QuoteLiked implements ShouldBroadcast
             'reacted' => true,
             'read_at' => null,
             'likeCount' => $this->likeCount,
+            'created_at' => now()->toISOString(),
             'time' => now()->diffForHumans(),
         ];
     }
