@@ -13,8 +13,7 @@ class CommentController extends Controller
     {
 
         $user = auth()->user();
-        $quote = Quote::findOrFail($quoteId);
-
+        $quote = Quote::with(['user', 'comments', 'likes'])->findOrFail($quoteId);
         $comment = Comment::create([
             'content' => $request->input('content'),
             'user_id' => auth()->id(),
@@ -22,7 +21,6 @@ class CommentController extends Controller
         ]);
 
         $commentCount = $quote->comments()->count();
-
         event(new QuoteCommented($quote, $comment, $user, $commentCount));
 
         $comment->load('user');

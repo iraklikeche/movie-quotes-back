@@ -23,7 +23,6 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
     {
         $this->quote = $quote;
         $this->user = $user;
-
     }
 
     /**
@@ -39,7 +38,7 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
     public function toArray(object $notifiable): array
     {
         return [
-            'quote_id' => $this->quote->id,
+            'quote' => $this->quote,
             'user' => $this->user,
             'user_id' => $this->user->id,
             'username' => $this->user->username,
@@ -55,7 +54,7 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
     {
 
         return new BroadcastMessage([
-            'quote_id' => $this->quote->id,
+            'quote' => $this->quote,
             'user' => $this->user,
             'user_id' => $this->user->id,
             'username' => $this->user->username,

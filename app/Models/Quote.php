@@ -15,7 +15,8 @@ class Quote extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = ['content', 'user_id', 'movie_id'];
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url','likes_count', 'liked_by_user', 'comments_count'];
+
 
     public $translatable = ['content'];
 
@@ -44,6 +45,22 @@ class Quote extends Model implements HasMedia
     {
         return $this->hasMany(Like::class);
     }
+
+    public function getLikesCountAttribute()
+    {
+        return $this->likes()->count();
+    }
+
+    public function getLikedByUserAttribute()
+    {
+        return $this->likes->contains('user_id', auth()->id());
+    }
+
+    public function getCommentsCountAttribute()
+    {
+        return $this->comments()->count();
+    }
+
 
     public function getImageUrlAttribute()
     {

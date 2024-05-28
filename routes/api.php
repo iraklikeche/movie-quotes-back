@@ -81,6 +81,8 @@ Route::prefix('movies')->controller(MovieController::class)->group(function () {
 
 Route::get('/movies/{movieId}/quotes', [QuoteController::class, 'quotesByMovie'])->name('quotesByMovie');
 Route::get('/notifications', [NotificationController::class, 'index']);
+Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
+Route::post('/notifications/{id}/mark-read', [NotificationController::class, 'markAsRead']);
 
 
 Route::middleware(['auth:sanctum'])->group(function () {

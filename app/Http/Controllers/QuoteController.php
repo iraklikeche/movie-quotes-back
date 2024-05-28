@@ -44,6 +44,7 @@ class QuoteController extends Controller
         $userId = Auth::id();
         $searchQuery = $request->input('search', '');
 
+
         $quotesQuery = QueryBuilder::for(Quote::class)
             ->allowedIncludes(['user', 'movie', 'comments', 'likes'])
             ->allowedFilters([
@@ -54,7 +55,7 @@ class QuoteController extends Controller
             ])
             ->with(['user', 'movie', 'comments', 'likes'])
             ->withCount(['likes','comments'])
-            ->latest();
+            ->latest()->paginate(2);
 
         if (!empty($searchQuery)) {
             if (str_starts_with($searchQuery, '#')) {
@@ -72,7 +73,7 @@ class QuoteController extends Controller
             }
         }
 
-        $quotes = $quotesQuery->get();
+        $quotes = $quotesQuery;
 
         $quotes->each(function ($quote) use ($userId) {
             $quote->append('image_url');
