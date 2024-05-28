@@ -25,7 +25,9 @@ class QuoteLiked implements ShouldBroadcast
      */
     public function __construct(Quote $quote, $user, $likeCount)
     {
-        $this->quote = $quote;
+        $this->quote = $quote->load(['comments', 'likes']);
+        $this->quote->append(['likes_count', 'liked_by_user', 'comments_count']);
+
         $this->user = $user;
         $this->likeCount = $likeCount;
 

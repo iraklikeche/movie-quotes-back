@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\Comment;
+use App\Models\Quote;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -15,11 +16,15 @@ class CommentAddedNotification extends Notification implements ShouldQueue
 
     public $comment;
     public $user;
+    public $quote;
 
-    public function __construct(Comment $comment, $user)
+    public function __construct(Comment $comment, $user, Quote $quote)
     {
         $this->comment = $comment;
         $this->user = $user;
+        $this->quote = $quote;
+        $this->quote = $quote->load(['comments', 'likes']);
+        // $this->quote = $quote->load('user');
     }
 
     /**
@@ -42,6 +47,7 @@ class CommentAddedNotification extends Notification implements ShouldQueue
         return [
             'comment_id' => $this->comment->id,
             'user' => $this->user,
+            'quote' => $this->quote,
             'user_id' => $this->user->id,
             'username' => $this->user->username,
             'message' => 'Commented to your movie quote',
@@ -56,6 +62,7 @@ class CommentAddedNotification extends Notification implements ShouldQueue
             'comment_id' => $this->comment->id,
             'user' => $this->user,
             'user_id' => $this->user->id,
+            'quote' => $this->quote,
             'username' => $this->user->username,
             'commented' => true,
             'time' => now()->toDateTimeString(),
