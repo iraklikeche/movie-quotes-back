@@ -23,8 +23,7 @@ class CommentAddedNotification extends Notification implements ShouldQueue
         $this->comment = $comment;
         $this->user = $user;
         $this->quote = $quote;
-        $this->quote = $quote->load(['comments', 'likes']);
-        // $this->quote = $quote->load('user');
+        $this->quote = $quote->load('user');
     }
 
     /**

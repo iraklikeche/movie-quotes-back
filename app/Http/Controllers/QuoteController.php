@@ -35,7 +35,7 @@ class QuoteController extends Controller
 
     public function show($id)
     {
-        $quote = Quote::with(['user', 'movie', 'comments', 'likes'])->findOrFail($id);
+        $quote = Quote::with(['user', 'movie'])->findOrFail($id);
         return response()->json($quote);
     }
 
