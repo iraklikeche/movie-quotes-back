@@ -22,6 +22,8 @@ class Movie extends Model implements HasMedia
         'name' => 'array',
         'director' => 'array',
         'description' => 'array',
+        'year' => 'integer',
+        'user_id' => 'integer',
     ];
 
     public function user()

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateQuoteRequest;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -43,6 +44,7 @@ class QuoteController extends Controller
     {
         $userId = Auth::id();
         $searchQuery = $request->input('search', '');
+        $perPage = $request->input('per_page', 10);
 
 
         $quotesQuery = QueryBuilder::for(Quote::class)
@@ -55,7 +57,7 @@ class QuoteController extends Controller
             ])
             ->with(['user', 'movie', 'comments', 'likes'])
             ->withCount(['likes','comments'])
-            ->latest()->paginate(2);
+            ->latest();
 
         if (!empty($searchQuery)) {
             if (str_starts_with($searchQuery, '#')) {
@@ -73,7 +75,7 @@ class QuoteController extends Controller
             }
         }
 
-        $quotes = $quotesQuery;
+        $quotes = $quotesQuery->paginate($perPage);
 
         $quotes->each(function ($quote) use ($userId) {
             $quote->append('image_url');

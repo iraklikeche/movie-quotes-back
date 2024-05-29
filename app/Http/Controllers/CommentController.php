@@ -21,6 +21,7 @@ class CommentController extends Controller
         ]);
 
         $commentCount = $quote->comments()->count();
+
         event(new QuoteCommented($quote, $comment, $user, $commentCount));
 
         $comment->load('user');
