@@ -3,6 +3,8 @@
 namespace App\Notifications;
 
 use App\Models\Quote;
+use Carbon\Carbon;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -13,7 +15,6 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
     use Queueable;
     public $quote;
     public $user;
-
 
 
     /**
@@ -32,7 +33,7 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database','broadcast'];
     }
 
     public function toArray(object $notifiable): array
@@ -40,28 +41,32 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
         return [
             'quote' => $this->quote,
             'user' => $this->user,
-            'user_id' => $this->user->id,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
             'message' => 'Reacted to your quote',
             'reacted' => true,
-            'time' => now()->toDateTimeString(),
+            'time' => Carbon::now(),
         ];
     }
 
 
     public function toBroadcast($notifiable)
     {
-
         return new BroadcastMessage([
             'quote' => $this->quote,
             'user' => $this->user,
-            'user_id' => $this->user->id,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
             'message' => 'Reacted to your quote',
             'reacted' => true,
-            'time' => now()->toDateTimeString(),
+            'time' => Carbon::now(),
         ]);
     }
+
+    public function broadcastOn()
+    {
+        return new Channel('App.Models.User.' . $this->quote->user_id);
+
+    }
+
 }
