@@ -18,8 +18,14 @@ test('should prevent password reuse', function () {
         'password_confirmation' => 'oldPassword',
         'token' => 'valid-token'
     ])->assertStatus(422)
-      ->assertJson(['error' => 'You cannot reuse your old password.']);
+      ->assertJson([
+          'message' => 'You cannot reuse your old password.',
+          'errors' => [
+              'password' => ['You cannot reuse your old password.']
+          ]
+      ]);
 });
+
 
 
 
@@ -53,7 +59,6 @@ test('successful password reset', function () {
     Event::assertDispatched(PasswordReset::class);
 });
 
-
 test('password reset with invalid token fails', function () {
     Notification::fake();
     $user = User::factory()->create([
@@ -68,11 +73,17 @@ test('password reset with invalid token fails', function () {
     ]);
 
     $response->assertStatus(422)
-             ->assertJson(['error' => 'Failed to reset password.']);
+             ->assertJson([
+                 'message' => 'Token expired.',
+                 'errors' => [
+                     'password' => ['Token expired.']
+                 ]
+             ]);
 
     $user->refresh();
     expect(Hash::check('oldPassword', $user->password))->toBeTrue();
 });
+
 
 
 test('password reset fails if new password is too short', function () {
