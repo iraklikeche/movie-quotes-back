@@ -3,43 +3,62 @@
 use App\Models\Genre;
 use App\Models\User;
 use Database\Seeders\GenresTableSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\postJson;
 
-it('can store a movie', function () {
-    Storage::fake('public');
+uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->artisan('db:seed', ['--class' => 'GenresTableSeeder']);
+});
+
+test('a user can store a movie', function () {
+    Storage::fake('public');
     $user = User::factory()->create();
 
-    $this->seed(GenresTableSeeder::class);
-
-    $genre1 = Genre::first();
-    $genre2 = Genre::skip(1)->first();
+    // Get a seeded genre
+    $genre = DB::table('genres')->first();
 
     $data = [
-        'name' => ['en' => 'Test Movie', 'ka' => 'ტესტი ფილმი'],
-        'director' => ['en' => 'John Doe', 'ka' => 'ჯონ დო'],
-        'description' => ['en' => 'A test movie description.', 'ka' => 'ტესტი ფილმის აღწერა.'],
-        'year' => 2024,
-        'genres' => [$genre1->id, $genre2->id],
-        'image' => UploadedFile::fake()->image('movie.jpg'),
+        'name' => [
+            'en' => 'Movie Name English',
+            'ka' => 'ფილმის სახელი ქართულად'
+        ],
+        'director' => [
+            'en' => 'Director Name English',
+            'ka' => 'დირექტორის სახელი ქართულად'
+        ],
+        'description' => [
+            'en' => 'Description in English',
+            'ka' => 'აღწერა ქართულად'
+        ],
+        'year' => 2023,
+        'genres' => [$genre->id],
+        'image' => UploadedFile::fake()->image('movie.jpg')
     ];
 
-    actingAs($user);
+    $response = $this->actingAs($user)->postJson('/api/movies', $data);
 
-    $response = postJson(route('movies.store'), $data)
-        ->assertStatus(201)
-        ->assertJsonPath('data.name', 'Test Movie');
+    $movieId = $response->json('data.id');
 
-    $movie = $response->json('data');
-    expect($movie)->toMatchArray([
-        'name' => 'Test Movie',
-        'director' => 'John Doe',
-        'description' => 'A test movie description.',
-        'year' => 2024,
-        'media_urls' => ['/storage/1/movie.jpg'],
+    $response->assertStatus(201)
+             ->assertJson([
+                 'data' => [
+                     'movie_name' => $data['name']['en'],
+                     'year' => 2023,
+                     'image_url' => Storage::url("$movieId/movie.jpg")
+                 ]
+             ]);
+
+    $this->assertDatabaseHas('movies', [
+        'user_id' => $user->id,
+        'year' => 2023,
     ]);
+
+    Storage::disk('public')->assertExists("$movieId/movie.jpg");
 });
