@@ -17,7 +17,6 @@ class SendQuoteLikedNotification
 
     public function handle(QuoteLiked $event)
     {
-
         $event->quote->user->notify(new QuoteLikedNotification($event->quote, $event->user));
     }
 }

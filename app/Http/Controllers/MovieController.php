@@ -12,8 +12,6 @@ class MovieController extends Controller
 {
     public function store(StoreMovieRequest $request)
     {
-
-
         $movie = new Movie($request->validated());
         $movie->user_id = auth()->id();
         $movie->save();
@@ -21,14 +19,11 @@ class MovieController extends Controller
         $movie->genres()->sync($request->genres);
         $movie->load('genres');
         $movie->append('media_urls');
-
-
         if ($request->hasFile('image')) {
             $movie->addMediaFromRequest('image')->toMediaCollection('movies');
         }
 
         return new MovieResource($movie);
-
     }
 
 

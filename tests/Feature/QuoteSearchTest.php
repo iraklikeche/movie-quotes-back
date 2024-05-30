@@ -90,3 +90,9 @@ it('searches quotes by movie name in Georgian', function () {
         expect($quote['movie']['name']['ka'])->toBe($searchTerm);
     }
 });
+
+
+// ციტატების და ფილმების ქრადები
+// პროფილის აფდეითი
+// ციტატების დაკომენტარება + მოწონება
+// broadcasting
