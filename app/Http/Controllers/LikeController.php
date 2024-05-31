@@ -12,7 +12,7 @@ class LikeController extends Controller
     public function store($quoteId)
     {
         $user = auth()->user();
-        $quote = Quote::with(['user', 'comments', 'likes'])->findOrFail($quoteId);
+        $quote = Quote::with(['user'])->findOrFail($quoteId);
 
         $like = Like::where('user_id', $user->id)->where('quote_id', $quoteId)->first();
 

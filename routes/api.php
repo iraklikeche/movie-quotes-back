@@ -70,12 +70,13 @@ Route::get('/auth/callback', function () {
 Route::get('/genres', [GenreController::class, 'index']);
 
 Route::prefix('movies')->controller(MovieController::class)->group(function () {
-    Route::post('/', 'store');
-    Route::get('/', 'index');
-    Route::get('/{id}', 'show');
-    Route::delete('/{id}', 'destroy');
-    Route::patch('/{id}', 'update');
-    Route::delete('/{id}', [QuoteController::class, 'destroy'])->name('destroy');
+    Route::post('/', 'store')->name('movies.store');
+    Route::get('/', 'index')->name('movies.index');
+    Route::get('/{id}', 'show')->name('movies.show');
+
+    Route::patch('/{id}', 'update')->name('movies.update');
+
+    Route::delete('/{id}', 'destroy')->name('movies.destroy');
 
 });
 

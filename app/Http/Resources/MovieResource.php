@@ -26,4 +26,5 @@ class MovieResource extends JsonResource
             'image_url' => $imageUrl,
         ];
     }
+
 }

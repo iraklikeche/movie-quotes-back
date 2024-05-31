@@ -17,7 +17,6 @@ class Quote extends Model implements HasMedia
     protected $fillable = ['content', 'user_id', 'movie_id'];
     protected $appends = ['image_url','likes_count', 'liked_by_user', 'comments_count'];
 
-
     public $translatable = ['content'];
 
     protected $casts = [
