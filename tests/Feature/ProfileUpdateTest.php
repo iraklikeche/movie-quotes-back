@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Database\Seeders\GenresTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->artisan('db:seed', ['--class' => 'DatabaseSeeder']);
+    $this->seed(GenresTableSeeder::class);
 });
 
 test('a user can update their username', function () {

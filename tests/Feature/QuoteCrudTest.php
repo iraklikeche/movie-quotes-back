@@ -3,6 +3,7 @@
 use App\Models\Movie;
 use App\Models\Quote;
 use App\Models\User;
+use Database\Seeders\GenresTableSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->artisan('db:seed', ['--class' => 'GenresTableSeeder']);
+    $this->seed(GenresTableSeeder::class);
 });
 test('a user can store a quote', function () {
     Storage::fake('public');

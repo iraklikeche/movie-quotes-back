@@ -4,12 +4,13 @@ use App\Models\Like;
 use App\Models\Movie;
 use App\Models\Quote;
 use App\Models\User;
+use Database\Seeders\GenresTableSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->artisan('db:seed', ['--class' => 'GenresTableSeeder']);
+    $this->seed(GenresTableSeeder::class);
 });
 
 test('a user can like a quote', function () {
@@ -38,10 +39,8 @@ test('a user can unlike a quote', function () {
     $movie = Movie::factory()->create();
     $quote = Quote::factory()->create(['movie_id' => $movie->id, 'user_id' => $user->id]);
 
-    // First, like the quote
     $this->actingAs($user)->postJson("/api/quotes/{$quote->id}/likes");
 
-    // Then, unlike the quote
     $response = $this->actingAs($user)->postJson("/api/quotes/{$quote->id}/likes");
 
     $response->assertStatus(200)

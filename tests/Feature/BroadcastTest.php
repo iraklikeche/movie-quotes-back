@@ -12,11 +12,12 @@ use App\Events\QuoteUnliked;
 use App\Models\Like;
 use App\Notifications\CommentAddedNotification;
 use App\Notifications\QuoteLikedNotification;
+use Database\Seeders\GenresTableSeeder;
 
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->artisan('db:seed', ['--class' => 'GenresTableSeeder']);
+    $this->seed(GenresTableSeeder::class);
     Event::fake();
     Notification::fake();
 });
