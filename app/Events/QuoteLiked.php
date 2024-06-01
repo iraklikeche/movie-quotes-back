@@ -45,12 +45,14 @@ class QuoteLiked implements ShouldBroadcast
 
             'quote' => $this->quote,
             'user' => $this->user,
-            'message' => 'Reacted to your quote',
+            'message' => [
+                'en' => __('reactions.reacted_to_your_quote', [], 'en'),
+                'ka' => __('reactions.reacted_to_your_quote', [], 'ka'),
+            ],
             'reacted' => true,
             'read_at' => null,
             'likeCount' => $this->likeCount,
             'created_at' => now()->toISOString(),
-            'time' => now()->diffForHumans(),
         ];
     }
 }
