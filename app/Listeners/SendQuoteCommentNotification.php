@@ -20,7 +20,10 @@ class SendQuoteCommentNotification
      */
     public function handle(QuoteCommented $event): void
     {
-        $event->comment->quote->user->notify(new CommentAddedNotification($event->comment, $event->user, $event->quote));
 
+
+        if ($event->quote->user_id !== $event->user->id) {
+            $event->comment->quote->user->notify(new CommentAddedNotification($event->comment, $event->user, $event->quote));
+        }
     }
 }

@@ -39,7 +39,7 @@ class CustomVerifyEmail extends Notification implements ShouldQueue
 
         $verificationUrl = $this->verificationUrl($notifiable);
         // Just for Testing.
-        return (new MailMessage())->view('email', ['url' => $verificationUrl, 'user' => $notifiable->username, 'headerText' => 'Verify your email address to get started', 'text' => "You're almost there! To complete your sign up, please verify your email address.", 'buttonText' => 'Verify now'])->from('no-reply@quizwiz.com')
+        return (new MailMessage())->view('email', ['url' => $verificationUrl, 'user' => $notifiable->username, 'headerText' => 'Verify your email address to get started', 'text' => "Thanks for joining Movie Quotes! We really appreciate it. Please click the button below to verify your account.   ", 'buttonText' => 'Verify account'])->from('no-reply@quizwiz.com')
         ->subject('Please verify your email');
     }
 
