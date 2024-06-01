@@ -8,11 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 class Quote extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
+    use HasTranslations;
 
     protected $fillable = ['content', 'user_id', 'movie_id'];
     protected $appends = ['image_url','likes_count', 'liked_by_user', 'comments_count'];
