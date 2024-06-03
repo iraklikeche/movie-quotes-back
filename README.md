@@ -1,67 +1,161 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Movie Quotes - Back-End
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is the back-end for the Movie Quotes application, built with Laravel. It provides the necessary APIs for user authentication, movie and quote management, and real-time notifications.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   User Authentication (Sign up, Sign in, Forgot Password, Reset Password) using Laravel Sanctum
+-   CRUD operations for movies and quotes
+-   Real-time notifications using Pusher and Laravel Broadcasting
+-   Localization support with Spatie Translatable
+-   Media management with Spatie Media Library
+-   Advanced query capabilities with Spatie Query Builder
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technologies Used
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Laravel**
+-   **MySQL**
+-   **Spatie Translatable**
+-   **Spatie Media Library**
+-   **Spatie Query Builder**
+-   **Laravel Sanctum**
+-   **Pusher**
+-   **Laravel Broadcasting**
 
-## Learning Laravel
+## Installation Instructions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prerequisites
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Ensure you have the following installed:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   [PHP](https://www.php.net/) (v7.4 or higher)
+-   [Composer](https://getcomposer.org/)
+-   [MySQL](https://www.mysql.com/)
+-   [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/)
 
-## Laravel Sponsors
+### Step-by-Step Guide
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. **Clone the repository**:
 
-### Premium Partners
+    ```bash
+    git clone git@github.com:RedberryInternship/-back-movie-quotes-irakli-ketchekmadze.git
+    cd movie-quotes-backend
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+2. **Install dependencies**:
 
-## Contributing
+    ```bash
+    composer install
+    npm install
+    ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3. **Configure environment variables**:
 
-## Code of Conduct
+    - Copy the `.env.example` file to `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    - Update the `.env` file with your database and other service credentials.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Generate application key**:
 
-## Security Vulnerabilities
+    ```bash
+    php artisan key:generate
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+5. **Run database migrations**:
 
-## License
+    ```bash
+    php artisan migrate
+    ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# -back-movie-quotes-irakli-ketchekmadze
+6. **Seed the database** (if you have seeders):
+
+    ```bash
+    php artisan db:seed
+    ```
+
+7. **Run the development server**:
+    ```bash
+    php artisan serve
+    ```
+
+## Usage
+
+To start using the application, run the development server as described above. You can then access the API at `http://localhost:8000`.
+
+## Configuration
+
+The application requires several environment variables for configuration. Add these variables to your `.env` file:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=movie_quotes
+DB_USERNAME=your-database-username
+DB_PASSWORD=your-database-password
+
+PUSHER_APP_ID=your-pusher-app-id
+PUSHER_APP_KEY=your-pusher-app-key
+PUSHER_APP_SECRET=your-pusher-app-secret
+PUSHER_APP_CLUSTER=your-pusher-app-cluster
+
+BROADCAST_DRIVER=pusher
+
+
+## Endpoints
+
+### Authentication
+
+- **Register**: `POST /api/register`
+- **Login**: `POST /api/login`
+- **Forgot Password**: `POST /api/password/forgot`
+- **Reset Password**: `POST /api/password/reset`
+
+### Movies
+
+- **Create Movie**: `POST /api/movies`
+- **Get Movies**: `GET /api/movies`
+- **Get Movie**: `GET /api/movies/{id}`
+- **Update Movie**: `PUT /api/movies/{id}`
+- **Delete Movie**: `DELETE /api/movies/{id}`
+
+### Quotes
+
+- **Create Quote**: `POST /api/quotes`
+- **Get Quotes**: `GET /api/quotes`
+- **Get Quote**: `GET /api/quotes/{id}`
+- **Update Quote**: `PUT /api/quotes/{id}`
+- **Delete Quote**: `DELETE /api/quotes/{id}`
+
+### Users
+
+- **Get User Profile**: `GET /api/user`
+- **Update User Profile**: `PUT /api/user`
+```
+
+## File Structure
+
+movie-quotes-backend/
+├── app/
+├── bootstrap/
+├── config/
+├── database/
+├── public/
+├── resources/
+├── routes/
+├── storage/
+├── tests/
+├── .env.example
+├── artisan
+├── composer.json
+├── package.json
+├── README.md
+└── webpack.mix.js
+
+## Database
+
+<a href='https://drawsql.app/teams/irakli/diagrams/movie-quotes'>Link to drawsql</a>
+
+<img src="{{ env('DRAWSQL_IMAGE') }}" alt="drawSQL" />
