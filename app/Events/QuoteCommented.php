@@ -52,11 +52,13 @@ class QuoteCommented implements ShouldBroadcast
             'comment' => $this->comment,
             'user' => $this->user,
             'commentCount' => $this->commentCount,
-            'message' => 'Commented to your movie quote',
+            'message' => [
+                'en' => __('reactions.commented_to_your_movie_quote', [], 'en'),
+                'ka' => __('reactions.commented_to_your_movie_quote', [], 'ka'),
+            ],
             'commented' => true,
             'read_at' => null,
             'created_at' => now()->toISOString(),
-            'time' => now()->diffForHumans(),
             ];
     }
 }

@@ -15,14 +15,13 @@ use function Pest\Laravel\postJson;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->artisan('db:seed', ['--class' => 'GenresTableSeeder']);
+    $this->seed(GenresTableSeeder::class);
 });
 
 test('a user can store a movie', function () {
     Storage::fake('public');
     $user = User::factory()->create();
 
-    // Get a seeded genre
     $genre = DB::table('genres')->first();
 
     $data = [

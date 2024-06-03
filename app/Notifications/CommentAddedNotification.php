@@ -48,9 +48,12 @@ class CommentAddedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'quote' => $this->quote,
             'username' => $this->user->username,
-            'message' => 'Commented to your movie quote',
+            'message' => [
+                'en' => __('reactions.commented_to_your_movie_quote', [], 'en'),
+                'ka' => __('reactions.commented_to_your_movie_quote', [], 'ka'),
+            ],
             'commented' => true,
-            'time' => Carbon::now(),
+            'created_at' => Carbon::now(),
         ];
     }
 
@@ -60,8 +63,12 @@ class CommentAddedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'quote' => $this->quote,
             'username' => $this->user->username,
+            'message' => [
+                'en' => __('reactions.commented_to_your_movie_quote', [], 'en'),
+                'ka' => __('reactions.commented_to_your_movie_quote', [], 'ka'),
+            ],
             'commented' => true,
-            'time' => Carbon::now(),
+            'created_at' => Carbon::now(),
         ]);
     }
 

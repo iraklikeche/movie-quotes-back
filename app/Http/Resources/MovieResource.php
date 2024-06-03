@@ -24,6 +24,8 @@ class MovieResource extends JsonResource
             'movie_name' => $movieName,
             'year' => $this->year,
             'image_url' => $imageUrl,
+            'quotes' => QuoteResource::collection($this->quotes),
+
         ];
     }
 

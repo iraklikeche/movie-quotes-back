@@ -43,9 +43,12 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
-            'message' => 'Reacted to your quote',
+            'message' => [
+                'en' => __('reactions.reacted_to_your_quote', [], 'en'),
+                'ka' => __('reactions.reacted_to_your_quote', [], 'ka'),
+            ],
             'reacted' => true,
-            'time' => Carbon::now(),
+            'created_at' => Carbon::now(),
         ];
     }
 
@@ -57,9 +60,12 @@ class QuoteLikedNotification extends Notification implements ShouldQueue
             'user' => $this->user,
             'username' => $this->user->username,
             'image' => $this->user->profile_image_url,
-            'message' => 'Reacted to your quote',
+            'message' => [
+                'en' => __('reactions.reacted_to_your_quote', [], 'en'),
+                'ka' => __('reactions.reacted_to_your_quote', [], 'ka'),
+            ],
             'reacted' => true,
-            'time' => Carbon::now(),
+            'created_at' => Carbon::now(),
         ]);
     }
 
