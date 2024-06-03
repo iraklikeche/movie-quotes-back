@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\QuoteLiked;
 use App\Notifications\QuoteLikedNotification;
-use Illuminate\Support\Facades\Log;
 
 class SendQuoteLikedNotification
 {

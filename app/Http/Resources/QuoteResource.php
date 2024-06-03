@@ -14,7 +14,6 @@ class QuoteResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $locale = $request->header('Accept-Language', 'en');
 
         return [
             'id' => $this->id,
