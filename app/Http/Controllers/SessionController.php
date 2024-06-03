@@ -133,7 +133,4 @@ class SessionController extends Controller
         return response()->json(['status' => 'valid']);
     }
 
-
-
-
 }
