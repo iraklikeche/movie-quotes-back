@@ -45,7 +45,7 @@ class CustomResetPassNotification extends Notification implements ShouldQueue
         return (new MailMessage())->view('email', ['url' => $url, 'user' => $notifiable->username,
                  'headerText' => 'Reset Your Password',
                  'text' => "We received a request to reset your password for your account. If you did not make this     request, please ignore this email. Otherwise, you can reset your password using the button below.",
-                'buttonText' => 'Reset Password'])->subject('Please verify your email')->from('no-reply@quizwiz.com');
+                'buttonText' => 'Reset Password'])->subject('Reset your password')->from('no-reply@moviequotes.com');
     }
 
     protected function resetUrl($token, $email)

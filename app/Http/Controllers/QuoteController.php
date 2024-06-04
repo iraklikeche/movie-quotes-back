@@ -62,14 +62,14 @@ class QuoteController extends Controller
             if (str_starts_with($searchQuery, '#')) {
                 $searchTerm = substr($searchQuery, 1);
                 $quotesQuery->where(function ($query) use ($searchTerm) {
-                    $query->where('content->en', 'LIKE', "%{$searchTerm}%")
-                          ->orWhere('content->ka', 'LIKE', "%{$searchTerm}%");
+                    $query->whereRaw('LOWER(content->"$.en") LIKE ?', ["%".strtolower($searchTerm)."%"])
+                          ->orWhereRaw('LOWER(content->"$.ka") LIKE ?', ["%".strtolower($searchTerm)."%"]);
                 });
             } elseif (str_starts_with($searchQuery, '@')) {
                 $searchTerm = substr($searchQuery, 1);
                 $quotesQuery->whereHas('movie', function ($query) use ($searchTerm) {
-                    $query->where('name->en', 'LIKE', "%{$searchTerm}%")
-                          ->orWhere('name->ka', 'LIKE', "%{$searchTerm}%");
+                    $query->whereRaw('LOWER(name->"$.en") LIKE ?', ["%".strtolower($searchTerm)."%"])
+                          ->orWhereRaw('LOWER(name->"$.ka") LIKE ?', ["%".strtolower($searchTerm)."%"]);
                 });
             }
         }
