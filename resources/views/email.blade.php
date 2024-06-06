@@ -53,10 +53,10 @@
                   <p style="margin-top: 30px">
                     If clicking doesn't work, you can try copying and pasting it to your browser:
                   </p>
-                  <p style="margin-top: 25px">
+                  <p style="margin-top: 25px; color:#DDCCAA">
                     {{$url}}
                   </p>
-                  <p style="margin-top: 25px">If you have any problems, please contact us: support@moviequotes.ge</p>
+                  <p style="margin-top: 25px; text-decoration:none; color:#fff">If you have any problems, please contact us: support@moviequotes.ge</p>
                   <p style="margin-top: 25px">MovieQuotes crew</p>
                 </div>
               </div>
