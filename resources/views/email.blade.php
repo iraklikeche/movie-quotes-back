@@ -12,52 +12,59 @@
             padding:0;
             box-sizing: border-box
         }
-        .container {
-            height:fit-content;
-            width:fit-content;
-            margin:auto;
-        }
-        .content {
-          margin:0 auto
-        }
-        .img-container {
-            width:fit-content
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .img-container img {
-            max-width: 100px;
-        }
-        h1 {
-            font-size: 24px;
-            color: #333333;
-            margin: 0 0 10px;
-        }
-        p {
-            font-size: 16px;
-            color: #555555;
-            margin: 10px 0;
-        }
-        a {
-            background-color: #4b69fd;
-            color: #ffffff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 20px;
-        }
-    </style>
+    </style> 
 </head>
-<body>
-  {{-- Just for Testing --}}
-    <div class='container'>
-        <div class="content">
-            <h1>{{$headerText}}</h1>
-        </div>
-        <p>Hi {{$user}},</p>
-        <p>{{$text}}</p>
-        <a href="{{$url}}">{{$buttonText}}</a>
-    </div>
+<body style="background-color:#181623; color:#ffffff;height: 100vh; width: 100%">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="height: 100vh">
+    <tr>
+      <td align="center" valign="top" style="padding-top: 30px">
+        <table
+          cellpadding="0"
+          cellspacing="0"
+          border="0"
+          style="color: #fff"
+        >
+          <tr>
+            <td style="padding:0 30px">
+              <div>
+
+                <div style="text-align: center; margin-bottom: 50px">                
+                  <img src="{{asset('images/logo.png')}}"/>
+
+                </div>
+                <div>
+                  <h2 style="margin-bottom: 20px">{{$headerText}}</h2>
+                  <p style="margin-bottom: 20px">
+                    Hi {{$user}},                  </p>
+                    <p style="margin-bottom: 20px">
+                       {{$text}}
+                    </p>
+                   <a href='{{$url}}' style="
+                   padding: 8px 12px;
+                   background-color: #e31221;
+                   border: none;
+                   color:#fff;
+                   border-radius: 5px;
+                   text-decoration:none;
+                 "
+                  > 
+                      {{$buttonText}}
+                    </a>
+                  <p style="margin-top: 30px">
+                    If clicking doesn't work, you can try copying and pasting it to your browser:
+                  </p>
+                  <p style="margin-top: 25px">
+                    {{$url}}
+                  </p>
+                  <p style="margin-top: 25px">If you have any problems, please contact us: support@moviequotes.ge</p>
+                  <p style="margin-top: 25px">MovieQuotes crew</p>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>
