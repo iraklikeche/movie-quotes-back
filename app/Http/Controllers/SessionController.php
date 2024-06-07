@@ -24,23 +24,25 @@ class SessionController extends Controller
         return response()->json(['message' => 'User successfully registered.']);
     }
 
-
     public function login(LoginUserRequest $request): JsonResponse
     {
-        $credentials = $request->only('email', 'password');
+        $login = $request->input('login');
+        $password = $request->input('password');
         $remember = $request->input('remember', false);
+
+        $fieldType = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $credentials = [$fieldType => $login, 'password' => $password];
 
         if (Auth::attemptWhen($credentials, function (User $user) {
             return $user->hasVerifiedEmail();
         }, $remember)) {
-
             session()->regenerate();
             return response()->json(['message' => __('auth.login_success')]);
         }
 
         return response()->json(['message' => __('auth.login_fail')], 401);
-
     }
+
 
     public function logout(Request $request): JsonResponse
     {
