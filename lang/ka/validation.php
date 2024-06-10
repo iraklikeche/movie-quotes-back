@@ -197,6 +197,7 @@ return [
         'director.ka'                     => 'რეჟისორი',
         'content.ka'                     => 'ციტატა',
         'content.en'                     => 'ციტატა',
+        'image' => ' '
 
     ],
 

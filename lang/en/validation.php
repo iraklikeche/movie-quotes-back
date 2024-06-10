@@ -197,6 +197,8 @@ return [
         'director.ka'                     => 'director',
         'content.ka'                     => 'quote',
         'content.en'                     => 'quote',
+        'image' => 'image'
+
     ],
 
 ];
