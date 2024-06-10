@@ -43,14 +43,15 @@ class StoreMovieRequest extends FormRequest
                 'sometimes',
                 'required',
                 'string',
-                'regex:/^[a-zA-Z\s,.\-?!]+$/'
+                'regex:/^[a-zA-Z0-9\s,.!\-?]+$/'
+
 
             ],
             'description.ka' => [
                 'sometimes',
                 'required',
                 'string',
-                'regex:/^[ა-ჰ\s,.\-?!]+$/'
+                'regex:/^[ა-ჰ0-9\s,.!\-?]+$/'
             ],
             'year' => 'required|integer',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',

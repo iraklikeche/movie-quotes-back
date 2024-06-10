@@ -122,8 +122,9 @@ class QuoteController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $content = array_merge($quote->content, $request->input('content', []));
+        $existingContent = json_decode($quote->content, true) ?? [];
 
+        $content = array_merge($existingContent, $request->input('content', []));
 
         $data = $request->only(['movie_id']);
         $data['content'] = $content;
@@ -140,4 +141,6 @@ class QuoteController extends Controller
 
         return response()->json(['message' => 'Quote updated successfully!', 'quote' => $quote]);
     }
+
+
 }
