@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateQuoteRequest;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
 
@@ -38,7 +39,6 @@ class QuoteController extends Controller
         $quote = Quote::with(['user', 'movie'])->findOrFail($id);
         return response()->json($quote);
     }
-
     public function index(Request $request)
     {
         $userId = Auth::id();
@@ -62,17 +62,19 @@ class QuoteController extends Controller
             if (str_starts_with($searchQuery, '#')) {
                 $searchTerm = substr($searchQuery, 1);
                 $quotesQuery->where(function ($query) use ($searchTerm) {
-                    $query->whereRaw('LOWER(content->"$.en") LIKE ?', ["%".strtolower($searchTerm)."%"])
-                          ->orWhereRaw('LOWER(content->"$.ka") LIKE ?', ["%".strtolower($searchTerm)."%"]);
+                    $query->whereRaw('LOWER(json_extract(content, "$.en")) LIKE ?', ["%".strtolower($searchTerm)."%"])
+                          ->orWhereRaw('LOWER(json_extract(content, "$.ka")) LIKE ?', ["%".strtolower($searchTerm)."%"]);
                 });
             } elseif (str_starts_with($searchQuery, '@')) {
                 $searchTerm = substr($searchQuery, 1);
                 $quotesQuery->whereHas('movie', function ($query) use ($searchTerm) {
-                    $query->whereRaw('LOWER(name->"$.en") LIKE ?', ["%".strtolower($searchTerm)."%"])
-                          ->orWhereRaw('LOWER(name->"$.ka") LIKE ?', ["%".strtolower($searchTerm)."%"]);
+                    $query->whereRaw('LOWER(json_extract(name, "$.en")) LIKE ?', ["%".strtolower($searchTerm)."%"])
+                          ->orWhereRaw('LOWER(json_extract(name, "$.ka")) LIKE ?', ["%".strtolower($searchTerm)."%"]);
                 });
             }
         }
+
+        Log::info('Generated Query:', ['query' => $quotesQuery->toSql(), 'bindings' => $quotesQuery->getBindings()]);
 
         $quotes = $quotesQuery->paginate($perPage);
 
@@ -83,6 +85,7 @@ class QuoteController extends Controller
 
         return response()->json($quotes);
     }
+
 
     public function quotesByMovie($movieId)
     {
