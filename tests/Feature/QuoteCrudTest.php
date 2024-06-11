@@ -43,13 +43,14 @@ test('a user can store a quote', function () {
 
     $this->assertDatabaseHas('quotes', [
         'id' => $quote['id'],
-        'content' => json_encode($data['content']),
+        'content' => json_encode($data['content'], JSON_UNESCAPED_UNICODE),
         'user_id' => $user->id,
         'movie_id' => $movie->id,
     ]);
 
     Storage::disk('public')->assertExists("{$quote['media'][0]['id']}/quote.jpg");
 });
+
 
 test('a user can retrieve their quotes', function () {
     $user = User::factory()->create();
@@ -163,7 +164,7 @@ test('a user can update a quote', function () {
 
     $this->assertDatabaseHas('quotes', [
         'id' => $quoteId,
-        'content' => json_encode($updatedData['content']),
+        'content' => json_encode($updatedData['content'], JSON_UNESCAPED_UNICODE),
         'user_id' => $user->id,
         'movie_id' => $movie->id,
     ]);
@@ -172,6 +173,7 @@ test('a user can update a quote', function () {
     Storage::disk('public')->assertMissing("{$originalMedia->id}/original_quote.jpg");
     Storage::disk('public')->assertExists("{$updatedMedia->id}/updated_quote.jpg");
 });
+
 
 
 test('a user can delete a quote', function () {

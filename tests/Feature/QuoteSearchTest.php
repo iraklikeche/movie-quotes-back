@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Movie;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\actingAs;
@@ -39,6 +40,8 @@ it('searches quotes by content in English', function () {
 });
 
 it('searches quotes by content in Georgian', function () {
+    Log::info('Quote content:', ['content' => $this->quotes->first()->content]);
+
     $searchTerm = $this->quotes->first()->content['ka'];
 
     actingAs($this->user);
@@ -49,6 +52,7 @@ it('searches quotes by content in Georgian', function () {
 
     expect($response->json('data.0.content.ka'))->toBe($searchTerm);
 });
+
 
 it('searches quotes by movie name in English', function () {
     $movie = Movie::find($this->movie->id);

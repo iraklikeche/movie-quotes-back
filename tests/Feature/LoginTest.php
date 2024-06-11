@@ -9,7 +9,7 @@ test('failed login with incorrect credentials', function () {
     ]);
 
     $response = $this->postJson('/api/login', [
-        'email' => $user->email,
+        'login' => $user->email,
         'password' => 'wrong-password',
         'remember' => false
     ]);
@@ -25,7 +25,7 @@ test('failed login with unverified email', function () {
     ]);
 
     $response = $this->postJson('/api/login', [
-        'email' => $user->email,
+        'login' => $user->email,
         'password' => 'user-password',
         'remember' => false
     ]);
@@ -34,17 +34,14 @@ test('failed login with unverified email', function () {
              ->assertJson(['message' => __('auth.login_fail')]);
 });
 
-
-
 test('successful login with correct credentials', function () {
-
     $user = User::factory()->create([
         'email_verified_at' => now(),
-        'password' => 'correct-password'
+        'password' => bcrypt('correct-password'),
     ]);
 
     $response = $this->postJson('/api/login', [
-        'email' => $user->email,
+        'login' => $user->email,
         'password' => 'correct-password',
     ]);
 
