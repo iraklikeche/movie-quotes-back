@@ -9,30 +9,19 @@ class DetailedMovieResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $movieNameEn = $this->getTranslation('name', 'en');
-        $movieNameKa = $this->getTranslation('name', 'ka');
-        $directorEn = $this->getTranslation('director', 'en');
-        $directorKa = $this->getTranslation('director', 'ka');
-        $descriptionEn = $this->getTranslation('description', 'en');
-        $descriptionKa = $this->getTranslation('description', 'ka');
+    
+        $nameTranslations = $this->getTranslations('name');
+        $directorTranslations = $this->getTranslations('director');
+        $descriptionTranslations = $this->getTranslations('description');
         $imageUrl = $this->media->first()?->getUrl() ?? null;
 
         return [
             'id' => $this->id,
-            'movie_name' => [
-                'en' => $movieNameEn,
-                'ka' => $movieNameKa,
-            ],
+            'movie_name' => $nameTranslations,
             'year' => $this->year,
             'image_url' => $imageUrl,
-            'director' => [
-                'en' => $directorEn,
-                'ka' => $directorKa,
-            ],
-            'description' => [
-                'en' => $descriptionEn,
-                'ka' => $descriptionKa,
-            ],
+            'director' => $directorTranslations,
+            'description' => $descriptionTranslations,
             'genres' => GenreResource::collection($this->genres),
         ];
     }

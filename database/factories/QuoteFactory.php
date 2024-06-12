@@ -15,14 +15,13 @@ class QuoteFactory extends Factory
 
     public function definition()
     {
-
         return [
             'user_id' => User::factory(),
             'movie_id' => Movie::factory(),
             'content' => [
                 'en' => $this->faker->sentence(),
-                'ka' =>  GeorgianFactory::create('ka_GE')->realText(30),
-                ],
+                'ka' => GeorgianFactory::create('ka_GE')->realText(30),
+            ],
             'created_at' => now(),
             'updated_at' => now(),
         ];

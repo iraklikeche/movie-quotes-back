@@ -6,10 +6,11 @@ use App\Events\QuoteLiked;
 use App\Events\QuoteUnliked;
 use App\Models\Like;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 
 class LikeController extends Controller
 {
-    public function store($quoteId)
+    public function store($quoteId): JsonResponse
     {
         $user = auth()->user();
         $quote = Quote::with(['user'])->findOrFail($quoteId);

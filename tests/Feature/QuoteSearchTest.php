@@ -40,15 +40,15 @@ it('searches quotes by content in English', function () {
 });
 
 it('searches quotes by content in Georgian', function () {
-    Log::info('Quote content:', ['content' => $this->quotes->first()->content]);
-
-    $searchTerm = $this->quotes->first()->content['ka'];
+    $searchTerm = 'UniqueGeorgianContent'.time();
+    $this->quotes->first()->update(['content' => ['en' => 'SomeContent', 'ka' => $searchTerm]]);
 
     actingAs($this->user);
 
-    $response = getJson(route('quotes.index', ['search' => '#'.$searchTerm]))
-        ->assertStatus(200)
-        ->assertJsonCount(1, 'data');
+    $response = getJson(route('quotes.index', ['search' => '#'.$searchTerm, 'per_page' => 10]))
+        ->assertStatus(200);
+
+    $response->assertJsonCount(1, 'data');
 
     expect($response->json('data.0.content.ka'))->toBe($searchTerm);
 });

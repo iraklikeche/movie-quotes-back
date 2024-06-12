@@ -6,10 +6,11 @@ use App\Events\QuoteCommented;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
-    public function store(StoreCommentRequest $request, $quoteId)
+    public function store(StoreCommentRequest $request, $quoteId): JsonResponse
     {
 
         $user = auth()->user();
@@ -29,7 +30,7 @@ class CommentController extends Controller
     }
 
 
-    public function index($quoteId)
+    public function index($quoteId):JsonResponse
     {
         $quote = Quote::findOrFail($quoteId);
         $comments = $quote->comments()->with('user')->oldest()->get();

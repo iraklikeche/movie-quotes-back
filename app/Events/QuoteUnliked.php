@@ -22,7 +22,7 @@ class QuoteUnliked implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(Quote $quote, $user,$likeCount)
+    public function __construct(Quote $quote, $user, $likeCount)
     {
         $this->quote = $quote;
         $this->user = $user;
@@ -41,7 +41,7 @@ class QuoteUnliked implements ShouldBroadcast
 
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return [
             'quote' => $this->quote,
