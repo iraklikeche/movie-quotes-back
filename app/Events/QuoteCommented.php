@@ -36,7 +36,7 @@ class QuoteCommented implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
         return [
             new Channel('App.Models.User.' . $this->quote->user_id),
@@ -45,7 +45,7 @@ class QuoteCommented implements ShouldBroadcast
 
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
         return [
             'quote' => $this->quote,

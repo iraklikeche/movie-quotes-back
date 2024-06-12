@@ -31,7 +31,7 @@ class QuoteLiked implements ShouldBroadcast
 
     }
 
-    public function broadcastOn()
+    public function broadcastOn():array
     {
         return [
             new Channel('App.Models.User.' . $this->quote->user_id),
@@ -39,7 +39,7 @@ class QuoteLiked implements ShouldBroadcast
         ];
     }
 
-    public function broadcastWith()
+    public function broadcastWith():array
     {
         return [
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
 use App\Models\Quote;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -13,7 +14,7 @@ use Spatie\QueryBuilder\AllowedFilter;
 
 class QuoteController extends Controller
 {
-    public function store(StoreQuoteRequest $request)
+    public function store(StoreQuoteRequest $request): JsonResponse
     {
 
         $quote = Quote::create([
@@ -34,12 +35,12 @@ class QuoteController extends Controller
         ], 201);
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
         $quote = Quote::with(['user', 'movie'])->findOrFail($id);
         return response()->json($quote);
     }
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $userId = Auth::id();
         $searchQuery = $request->input('search', '');
@@ -74,7 +75,6 @@ class QuoteController extends Controller
             }
         }
 
-        Log::info('Generated Query:', ['query' => $quotesQuery->toSql(), 'bindings' => $quotesQuery->getBindings()]);
 
         $quotes = $quotesQuery->paginate($perPage);
 
@@ -87,7 +87,7 @@ class QuoteController extends Controller
     }
 
 
-    public function quotesByMovie($movieId)
+    public function quotesByMovie($movieId): JsonResponse
     {
         $userId = Auth::id();
         $quotes = Quote::where('movie_id', $movieId)
@@ -104,7 +104,7 @@ class QuoteController extends Controller
         return response()->json($quotes);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $quote = Quote::findOrFail($id);
 
@@ -117,7 +117,7 @@ class QuoteController extends Controller
         return response()->json(['message' => 'Quote deleted successfully!']);
     }
 
-    public function update(UpdateQuoteRequest $request, $id)
+    public function update(UpdateQuoteRequest $request, $id): JsonResponse
     {
         $quote = Quote::findOrFail($id);
 

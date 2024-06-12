@@ -7,10 +7,12 @@ use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\DetailedMovieResource;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class MovieController extends Controller
 {
-    public function store(StoreMovieRequest $request)
+    public function store(StoreMovieRequest $request): MovieResource
     {
         $movie = new Movie($request->validated());
         $movie->user_id = auth()->id();
@@ -27,19 +29,19 @@ class MovieController extends Controller
     }
 
 
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         $movies = Movie::with(['media'])->where('user_id', auth()->id())->get();
         return MovieResource::collection($movies);
     }
 
-    public function show($id)
+    public function show($id): DetailedMovieResource
     {
         $movie = Movie::with(['media', 'genres'])->findOrFail($id);
         return new DetailedMovieResource($movie);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
         $movie = Movie::findOrFail($id);
         if (auth()->id() !== $movie->user_id) {
@@ -50,7 +52,7 @@ class MovieController extends Controller
         return response()->json(['message' => 'Movie deleted successfully']);
     }
 
-    public function update(UpdateMovieRequest $request, $id)
+    public function update(UpdateMovieRequest $request, $id): DetailedMovieResource
     {
         $movie = Movie::findOrFail($id);
 
