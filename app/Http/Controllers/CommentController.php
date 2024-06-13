@@ -30,7 +30,7 @@ class CommentController extends Controller
     }
 
 
-    public function index($quoteId):JsonResponse
+    public function index($quoteId): JsonResponse
     {
         $quote = Quote::findOrFail($quoteId);
         $comments = $quote->comments()->with('user')->oldest()->get();

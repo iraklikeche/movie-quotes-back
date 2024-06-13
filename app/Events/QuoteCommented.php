@@ -40,7 +40,7 @@ class QuoteCommented implements ShouldBroadcast
     {
         return [
             new Channel('App.Models.User.' . $this->quote->user_id),
-        new Channel('quote.' . $this->quote->id)
+            new Channel('quote.' . $this->quote->id)
         ];
 
     }

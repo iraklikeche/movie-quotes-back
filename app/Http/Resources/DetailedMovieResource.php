@@ -9,7 +9,7 @@ class DetailedMovieResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-    
+
         $nameTranslations = $this->getTranslations('name');
         $directorTranslations = $this->getTranslations('director');
         $descriptionTranslations = $this->getTranslations('description');
